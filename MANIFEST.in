@@ -1,0 +1,7 @@
+include AUTHORS
+include LICENSE
+include README.rst
+include HISTORY
+recursive-include */templates *
+recursive-include */static *
+recursive-include */locale *

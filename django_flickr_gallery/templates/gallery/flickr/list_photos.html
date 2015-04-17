@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<div class="container">
+    <h4 class="header">
+        {{ flickr_album.photoset.title }}
+        <span class="badge badge-success pull-right">{{ paginator.count }} photos</span>
+    </h4>
+    <p>{{ flickr_album.photoset.description }}</p>
+
+    <div class="row">
+    {% for photo in paginator.page %}
+        <div class="col-md-2 col-sm-3 col-xs-6">
+            <div class="thumbnail">
+                <img title="{{ photo.title }}" src="{{ photo.url_q }}"{% if photo.description %} alt="{{ photo.description }}"{% endif %} />
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% include "gallery/flickr/pagination.html" %}
+</div>
+{% endblock container %}
