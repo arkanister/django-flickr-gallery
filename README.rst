@@ -19,7 +19,11 @@ An app to integrate django with flickr and put together a photo gallery based on
 Installation
 ------------
 
-1. Add ``django_flickr_gallery`` to your INSTALLED_APPS and all the plugins you want, setting like this::
+1. Install with pip or easy install (All dependencies will be installed automatically)::
+
+    pip install django-flickr-gallery
+
+2. Add ``django_flickr_gallery`` to your INSTALLED_APPS and all the plugins you want, setting like this::
 
     INSTALLED_APPS = (
         ...
@@ -27,7 +31,7 @@ Installation
         'django_flickr_gallery',
     )
 
-2. Define migrations modules. *(Only django >= 1.7)*::
+3. Define migrations modules. *(Only django >= 1.7)*::
 
     MIGRATION_MODULES = {
         ...
@@ -35,16 +39,25 @@ Installation
         'django_flickr_gallery': 'django_flickr_gallery.migrations_django',
     }
 
-3. Define ``FLICKR_API_KEY``, ``FLICKR_SECRET`` to Django settings. To get an api
-   key and secret visit `Flickr Docs <https://www.flickr.com/services/api/>`_.
+4. Define ``FLICKR_API_KEY``, ``FLICKR_SECRET`` to Django settings. To get an api
+   key and secret visit `Flickr Docs <https://www.flickr.com/services/api/>`_
 
-4. Define ``FLICKR_USER_ID`` to Django settings. To get flickr user
+5. Define ``FLICKR_USER_ID`` to Django settings. To get flickr user
    id visit `idGettr <http://idgettr.com/>`_.
 
-5. Run ``python manage.py migrate``.
+6. Add ``django_flickr_gallery.urls`` to your urls with namespace='flickr-gallery'::
 
-6. Start the development server ``python manage.py runserver``
-   and visit http://localhost:8000/ to be happy :).
+    urlpatterns = patterns('',
+        ......
+        (r'^gallery/', include('django_flickr_gallery.urls', namespace='flickr-gallery')),
+        ......
+    )
+
+7. Run ``python manage.py syncdb`` or ``python manage.py migrate``.
+
+8. Create an album into django admin in the section ``Flickr Gallery/Albums``
+
+9. Be Happy :)
 
 Templates
 ---------
