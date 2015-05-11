@@ -5,3 +5,8 @@ synced version number to django-flickr-gallery
 0.1 (2015-04-17)
 ----------------
 * Initial project setup
+
+added home.html ``show_flickr_photoset`` template tag
+0.1.1 (2015-05-11)
+----------------
+* enabled support to ``show_flickr_photoset``

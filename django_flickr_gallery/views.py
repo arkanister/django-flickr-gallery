@@ -27,7 +27,7 @@ class FlickrAlbumPhotoListView(DetailView):
         return self.model.objects.get(pk=self.kwargs.get('pk'), is_published=True)
 
     def get_paginator(self):
-        return FlickrPhotoPaginator(self.object,
+        return FlickrPhotoPaginator(self.object.flickr_album_id,
              page=self.request.GET.get(self.per_page_field),
              per_page=self.per_page)
 

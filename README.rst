@@ -81,3 +81,30 @@ Set ``FLICKR_PER_PAGE`` in django settings to change the number of photos per pa
 
     FLICKR_PER_PAGE = NEW_VALUE (default=10)
 
+
+Photoset Tag
+------------
+
+The photoset tag is one way to render only an album at a time. It is useful to show pictures to a specific page.
+
+To use it you need to know what the photoset id, to identify you go to `How to get photoset id: http://support.averta.net/envato/knowledgebase/find-id-photoset-flickr/`_.::
+
+    home.html
+    {% extends 'base' %}
+
+    {% load flickr_tags %}
+
+    {% block content %}
+        {% show_flickr_photoset 'FLICKR_PHOTOSET_ID' %}
+    {% endblock content %}
+
+Rendering with a custom template.::
+
+    home.html
+    {% extends 'base' %}
+
+    {% load flickr_tags %}
+
+    {% block content %}
+        {% show_flickr_photoset 'FLICKR_PHOTOSET_ID' template="gallery/flickr/mytemplate.html" %}
+    {% endblock content %}

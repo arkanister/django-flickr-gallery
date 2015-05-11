@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block container %}
+{% block content %}
 <div class="container">
     <h4 class="header">
         {{ flickr_album.photoset.title }}
@@ -20,4 +20,4 @@
 
     {% include "gallery/flickr/pagination.html" %}
 </div>
-{% endblock container %}
+{% endblock content %}

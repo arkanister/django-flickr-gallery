@@ -181,8 +181,8 @@ class FlickrPage(object):
 
 
 class FlickrPhotoPaginator(object):
-    def __init__(self, flickr_album, per_page=10, page=None, extras=None):
-        self.flickr_album = flickr_album
+    def __init__(self, album_id, per_page=10, page=None, extras=None):
+        self.album_id = album_id
         self.per_page = per_page
         self.current_page_number = int(page or 1)
         self.extras = extras or []
@@ -199,7 +199,7 @@ class FlickrPhotoPaginator(object):
             try:
                 self._flickr_response = json.loads(build_flickr_call(
                     "photosets", "getPhotos",
-                    photoset_id=self.flickr_album.flickr_album_id,
+                    photoset_id=self.album_id,
                     per_page=self.per_page, extras=self.get_extras(),
                     page=self.current_page_number)
                 ).get("photoset")
@@ -209,7 +209,7 @@ class FlickrPhotoPaginator(object):
     data = property(_flickr_call)
 
     def _photos(self):
-        cache_id = "flickr_photoset_%s_photos_page_%s" % (self.flickr_album.flickr_album_id, self.current_page_number)
+        cache_id = "flickr_photoset_%s_photos_page_%s" % (self.album_id, self.current_page_number)
         flickr_photoset_photos = cache.get(cache_id)
         if flickr_photoset_photos is None:
             flickr_photoset_photos = []
