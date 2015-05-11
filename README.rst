@@ -87,7 +87,7 @@ Photoset Tag
 
 The photoset tag is one way to render only an album at a time. It is useful to show pictures to a specific page.
 
-To use it you need to know what the photoset id, to identify you go to `How to get photoset id: http://support.averta.net/envato/knowledgebase/find-id-photoset-flickr/`_.::
+To use it you need to know what the photoset id, to identify you go to `How to get photoset id <http://support.averta.net/envato/knowledgebase/find-id-photoset-flickr/>`_.::
 
     home.html
     {% extends 'base' %}
