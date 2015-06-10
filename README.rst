@@ -45,12 +45,12 @@ Installation
 5. Define ``FLICKR_USER_ID`` to Django settings. To get flickr user
    id visit `idGettr <http://idgettr.com/>`_.
 
-6. Add ``django_flickr_gallery.urls`` to your urls with namespace='flickr-gallery'::
+6. Add ``django_flickr_gallery.urls`` to your urls::
 
     urlpatterns = patterns('',
-        ......
-        (r'^gallery/', include('django_flickr_gallery.urls', namespace='flickr-gallery')),
-        ......
+        ...
+
+        (r'^gallery/', include('django_flickr_gallery.urls'),
     )
 
 7. Run ``python manage.py syncdb`` or ``python manage.py migrate``.
