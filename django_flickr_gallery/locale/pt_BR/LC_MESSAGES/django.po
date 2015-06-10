@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-10 16:13-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: admin.py:49
+msgid "Mark selected stories as published"
+msgstr "Publicar registros selecionados"
+
+#: admin.py:50
+msgid "Unmark selected stories as published"
+msgstr "Despublicar registros selecionados"
+
+#: admin.py:51
+msgid "Synchronize selected stories with flickr"
+msgstr "Sincronizar registros selecionados com o flickr"
+
+#: apps.py:7
+#, fuzzy
+#| msgid "Gallery"
+msgid "Flickr Gallery"
+msgstr "Galeria"
+
+#: models.py:16
+#, fuzzy
+#| msgid "Select a flickr album."
+msgid "Flickr album"
+msgstr "Selecione o album do flickr."
+
+#: models.py:17
+msgid "Select a flickr album."
+msgstr "Selecione o album do flickr."
+
+#: models.py:21
+msgid "Used to generate friendly urls."
+msgstr "Utilizado para urls amigáveis."
+
+#: models.py:24
+msgid "Title"
+msgstr "Título"
+
+#: models.py:25
+msgid "Album title."
+msgstr "Título do Album"
+
+#: models.py:28
+msgid "Description"
+msgstr "Descrição"
+
+#: models.py:29
+msgid "Describe this album here."
+msgstr "Descreva aqui este album."
+
+#: models.py:32
+msgid "Published"
+msgstr "Publicado"
+
+#: models.py:33
+msgid "Unmark if the album can not be visible."
+msgstr "Desmarque para que o album não seja visto."
+
+#: models.py:36
+msgid "Last Sync"
+msgstr "Última Sincronização"
+
+#: models.py:37
+msgid "The last sync with flickr api."
+msgstr "Ultima sincronização com o flickr."
+
+#: models.py:40 models.py:41
+msgid "Album"
+msgstr "Album"
+
+#: settings.py:16
+msgid "Need to define FLICKR_API_KEY and FLICKR_SECRET and FLICKR_USER_ID"
+msgstr ""
+"É necessário definir FLICKR_API_KEY, FLICKR_SECRET e FLICKR_USER_ID nas "
+"configurações do django"
+
+#: templates/gallery/flickr/album.html:10
+msgid "Gallery"
+msgstr "Galeria"
+
+#: templates/gallery/flickr/album.html:23
+msgid "Show photos"
+msgstr "Ver Fotos"
+
+#: templates/gallery/flickr/parts/pagination.html:6
+#: templates/gallery/flickr/parts/pagination.html:8
+msgid "first"
+msgstr "primeiro"
+
+#: templates/gallery/flickr/parts/pagination.html:14
+#: templates/gallery/flickr/parts/pagination.html:16
+msgid "previous"
+msgstr "anterior"
+
+#: templates/gallery/flickr/parts/pagination.html:26
+#: templates/gallery/flickr/parts/pagination.html:28
+msgid "next"
+msgstr "próximo"
+
+#: templates/gallery/flickr/parts/pagination.html:34
+#: templates/gallery/flickr/parts/pagination.html:36
+msgid "last"
+msgstr "último"

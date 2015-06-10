@@ -4,13 +4,15 @@ from django_flickr_gallery.utils import get_photosets
 from flickrapi.exceptions import FlickrError
 
 
-class FlickrAlbumForm(forms.ModelForm):
-
+class FlickrCreateAlbumForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(FlickrAlbumForm, self).__init__(*args, **kwargs)
+        super(FlickrCreateAlbumForm, self).__init__(*args, **kwargs)
         choices = (("", "----------"),)
         try:
-            choices += tuple([(photoset['id'], photoset['title']) for photoset in get_photosets()])
+            existing_album = [album.flickr_album_id for album in FlickrAlbum.objects.all()]
+            photosets = [(photoset['id'], photoset['title']) for photoset in get_photosets()]
+            photosets = filter(lambda x: x[0] not in existing_album, photosets)
+            choices += tuple(photosets)
         except FlickrError, e:
             print e.message
 
@@ -19,3 +21,10 @@ class FlickrAlbumForm(forms.ModelForm):
 
     class Meta:
         model = FlickrAlbum
+        fields = ['flickr_album_id']
+
+
+class FlickrUpdateAlbumForm(forms.ModelForm):
+    class Meta:
+        model = FlickrAlbum
+        fields = ['title', 'slug', 'description', 'published']

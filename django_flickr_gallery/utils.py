@@ -1,9 +1,8 @@
 import json
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django_flickr_gallery.settings import API_KEY, SECRET, USER_ID
+from django.core.paginator import PageNotAnInteger, EmptyPage
+from django_flickr_gallery import settings
 from flickrapi.core import FlickrAPI
 from flickrapi.exceptions import FlickrError
-from django.core.cache import cache
 import six
 
 
@@ -36,29 +35,42 @@ def parser(value, key="_content"):
         return None
 
 
-def build_flickr_call(module, method, response_format="json", quiet=False, **params):
-    flickr = FlickrAPI(API_KEY, SECRET)
+def get_flickr_object():
+    flickr = FlickrAPI(
+        settings.API_KEY, settings.SECRET,
+        cache=settings.FLICKR_CACHE,
+        store_token=settings.FLICKR_STORE_TOKEN)
+    flickr.cache = settings.FLICKR_CACHE_BACKEND
+    return flickr
+
+
+def build_flickr_call(module, method, response_format="json", quiet=False, context=None):
+    """
+    A builder to flickr api call.
+    """
+    flickr = get_flickr_object()
+    context = context or {}
     call = "%s.%s" % (module, method)
     command = getattr(flickr, call)
 
-    params['format'] = response_format
-    params['user_id'] = USER_ID
+    # add context bases
+    context['format'] = response_format
+    context['user_id'] = settings.USER_ID
 
     try:
-        return command(**params)
+        return command(**context)
     except FlickrError, e:
         if not quiet:
             raise FlickrError, e.message
 
 
 def serialize_photoset(photoset):
-    photoset = AttributeDict(photoset)
     return {
-        "id": photoset.id,
-        "title": parser(photoset.title),
-        "description": parser(photoset.description),
-        "primary": photoset.primary,
-        "count_photos": photoset.count_photos
+        "id": photoset.get('id'),
+        "title": parser(photoset.get('title')),
+        "description": parser(photoset.get('description')),
+        "primary": photoset.get('primary'),
+        "count_photos": photoset.get('count_photos')
     }
 
 
@@ -68,8 +80,17 @@ def get_photosets():
 
 
 def get_photoset(flickr_photoset_id):
-    photoset = build_flickr_call("photosets", "getInfo", photoset_id=flickr_photoset_id)
-    return serialize_photoset(json.loads(photoset)['photoset'])
+    response = build_flickr_call(
+        "photosets", "getInfo",
+        context={"photoset_id": flickr_photoset_id})
+
+    response = json.loads(response).get('photoset')
+
+    primary = response.pop('primary')
+    if primary is not None:
+        primary = get_primary(primary)
+        response['primary'] = primary
+    return serialize_photoset(response)
 
 
 def serialize_primary(photo, sizes):
@@ -101,8 +122,9 @@ def serialize_primary(photo, sizes):
 
 
 def get_primary(flickr_photo_id):
-    photo = build_flickr_call("photos", "getInfo", photo_id=flickr_photo_id)
-    photo_sizes = build_flickr_call("photos", "getSizes", photo_id=flickr_photo_id)
+    context = {'photo_id': flickr_photo_id}
+    photo = build_flickr_call("photos", "getInfo", context=context)
+    photo_sizes = build_flickr_call("photos", "getSizes", context=context)
     return serialize_primary(json.loads(photo)['photo'], sizes=json.loads(photo_sizes)["sizes"]["size"])
 
 
@@ -110,6 +132,13 @@ def serialize_photo(photo):
     photo = AttributeDict(photo)
     url = photo.pop("url_o")
     urls = dict([('url_' + size, photo.get('url_' + size)) for size in SIZES_LIST])
+    print json.dumps(dict({
+        "id": photo.id,
+        "title": photo.title,
+        "description": parser(photo.description),
+        "url": url
+    }, **urls))
+
     return dict({
         "id": photo.id,
         "title": photo.title,
@@ -118,8 +147,57 @@ def serialize_photo(photo):
     }, **urls)
 
 
-class FlickrPage(object):
+class FlickrPhotoIterator(object):
+    def __init__(self, photoset_id, per_page=None, page=None, extras=None):
+        self.photoset_id = photoset_id
+        self.extras = extras or []
+        self.per_page = per_page or settings.PER_PAGE
+        self.current_page_number = page
+        self.has_paginator = self.per_page is not None
 
+    def __repr__(self):
+        return "<FlickrPhotoIterator: object>"
+
+    def __iter__(self):
+        """
+        Iter only in photos.
+        """
+        for photo in self.photos:
+            yield photo
+
+    def get_extras(self):
+        return ', '.join(self.extras + ["description", "url_o"] + ["url_" + size for size in SIZES_LIST])
+
+    def _get_paginator(self):
+        if self.has_paginator:
+            return FlickrPhotoPaginator(data=self.photos, per_page=self.per_page, page=self.current_page_number)
+        return None
+    paginator = property(_get_paginator)
+
+    def _flickr_call(self):
+        if not hasattr(self, '_flickr_response'):
+            try:
+                context = {'photoset_id': self.photoset_id, 'extras': self.get_extras()}
+
+                if self.has_paginator:
+                    context['per_page'] = self.per_page
+                    context['page'] = self.current_page_number
+
+                response = build_flickr_call("photosets", "getPhotos", context=context)
+                self._flickr_response = json.loads(response).get("photoset")
+            except FlickrError:
+                self._flickr_response = None
+        return self._flickr_response
+    data = property(_flickr_call)
+
+    def _photos(self):
+        if self.data is not None:
+            return [serialize_photo(photo) for photo in self.data.get("photo")]
+        return None
+    photos = property(_photos)
+
+
+class FlickrPage(object):
     def __init__(self, object_list, number, paginator):
         self.object_list = object_list
         self.number = number
@@ -181,43 +259,14 @@ class FlickrPage(object):
 
 
 class FlickrPhotoPaginator(object):
-    def __init__(self, album_id, per_page=10, page=None, extras=None):
-        self.album_id = album_id
+    def __init__(self, data, per_page=10, page=None):
+        self.data = data
         self.per_page = per_page
         self.current_page_number = int(page or 1)
-        self.extras = extras or []
-        self.page = FlickrPage(self.photos, self.current_page_number, self)
+        self.page = FlickrPage(self.data, self.current_page_number, self)
 
     def __repr__(self):
         return "<FlickrPhotoPaginator>"
-
-    def get_extras(self):
-        return ', '.join(self.extras + ["description", "url_o"] + ["url_" + size for size in SIZES_LIST])
-
-    def _flickr_call(self):
-        if not hasattr(self, '_flickr_response'):
-            try:
-                self._flickr_response = json.loads(build_flickr_call(
-                    "photosets", "getPhotos",
-                    photoset_id=self.album_id,
-                    per_page=self.per_page, extras=self.get_extras(),
-                    page=self.current_page_number)
-                ).get("photoset")
-            except FlickrError:
-                self._flickr_response = None
-        return self._flickr_response
-    data = property(_flickr_call)
-
-    def _photos(self):
-        cache_id = "flickr_photoset_%s_photos_page_%s" % (self.album_id, self.current_page_number)
-        flickr_photoset_photos = cache.get(cache_id)
-        if flickr_photoset_photos is None:
-            flickr_photoset_photos = []
-            if self.data is not None:
-                flickr_photoset_photos = [serialize_photo(photo) for photo in self.data.get("photo")]
-            cache.set(cache_id, flickr_photoset_photos)
-        return flickr_photoset_photos
-    photos = property(_photos)
 
     def _num_pages(self):
         if self.data is not None:
