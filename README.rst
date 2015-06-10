@@ -68,8 +68,8 @@ extends the ``base.html`` template.
 Use ``LIST_ALBUMS_TEMPLATE`` and ``LIST_PHOTOS_TEMPLATE`` in django settings
 to change the templates that will be rendered.::
 
-    LIST_ALBUMS_TEMPLATE = 'my_custom_albums_template.html'
-    LIST_PHOTOS_TEMPLATE = 'my_custom_photos_template.html'
+    FLICKR_LIST_ALBUMS_TEMPLATE = 'my_custom_albums_template.html'
+    FLICKR_LIST_PHOTOS_TEMPLATE = 'my_custom_photos_template.html'
 
 Photo Pagination
 ----------------
@@ -81,6 +81,7 @@ Set ``FLICKR_PER_PAGE`` in django settings to change the number of photos per pa
 
     FLICKR_PER_PAGE = NEW_VALUE (default=10)
 
+Set ``FLICKR_PER_PAGE`` as None to disable pagination.
 
 Photoset Tag
 ------------
