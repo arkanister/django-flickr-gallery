@@ -8,7 +8,7 @@ class FlickrAlbumAdmin(admin.ModelAdmin):
     list_display = ('title', 'url', 'last_sync', 'published')
     list_filter = ('published', 'last_sync')
     form = FlickrUpdateAlbumForm
-    prepopulated_fields = {"slug": ('title',)}
+    # prepopulated_fields = {"slug": ('title',)}
 
     actions = ['make_published', 'make_unpublished', 'sync_album']
 
