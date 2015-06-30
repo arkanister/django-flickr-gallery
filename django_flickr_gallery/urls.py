@@ -3,5 +3,5 @@ from django_flickr_gallery.views import FlickrAlbumListView, FlickrAlbumPhotoLis
 
 urlpatterns = patterns('',
     url(r'^$', FlickrAlbumListView.as_view(), name='gallery-album'),
-    url(r'^(?P<slug>[a-z\-]+)/$', FlickrAlbumPhotoListView.as_view(), name='gallery-photos'),
+    url(r'^(?P<slug>[a-z0-9\-]+)/$', FlickrAlbumPhotoListView.as_view(), name='gallery-photos'),
 )

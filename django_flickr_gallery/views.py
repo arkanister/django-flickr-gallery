@@ -47,5 +47,6 @@ class FlickrAlbumPhotoListView(DetailView):
         if object_list.has_paginator:
             context["photos"] = object_list.paginator.page
             context["paginator"] = object_list.paginator
+            context["page"] = object_list.paginator.page
 
         return context

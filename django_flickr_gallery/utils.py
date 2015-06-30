@@ -132,12 +132,6 @@ def serialize_photo(photo):
     photo = AttributeDict(photo)
     url = photo.pop("url_o")
     urls = dict([('url_' + size, photo.get('url_' + size)) for size in SIZES_LIST])
-    print json.dumps(dict({
-        "id": photo.id,
-        "title": photo.title,
-        "description": parser(photo.description),
-        "url": url
-    }, **urls))
 
     return dict({
         "id": photo.id,
@@ -170,7 +164,15 @@ class FlickrPhotoIterator(object):
 
     def _get_paginator(self):
         if self.has_paginator:
-            return FlickrPhotoPaginator(data=self.photos, per_page=self.per_page, page=self.current_page_number)
+            # get info to paginator
+            params = {
+                "pages": self.data.get("pages"),
+                "total": self.data.get("total")}
+
+            # paginator maker
+            return FlickrPhotoPaginator(
+                data=self.photos, per_page=self.per_page,
+                page=self.current_page_number, **params)
         return None
     paginator = property(_get_paginator)
 
@@ -259,26 +261,16 @@ class FlickrPage(object):
 
 
 class FlickrPhotoPaginator(object):
-    def __init__(self, data, per_page=10, page=None):
+    def __init__(self, data, per_page=10, page=None, pages=None, total=None):
         self.data = data
         self.per_page = per_page
+        self.num_pages = pages or 1
+        self.total = total or 1
         self.current_page_number = int(page or 1)
         self.page = FlickrPage(self.data, self.current_page_number, self)
 
     def __repr__(self):
-        return "<FlickrPhotoPaginator>"
-
-    def _num_pages(self):
-        if self.data is not None:
-            return self.data.get("pages")
-        return 1
-    num_pages = property(_num_pages)
-
-    def _count(self):
-        if self.data is not None:
-            return self.data.get("total")
-        return 0
-    count = property(_count)
+        return "<FlickrPhotoPaginator />"
 
     def _page_range(self):
         return range(1, self.num_pages + 1)
