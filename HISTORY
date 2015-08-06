@@ -12,6 +12,6 @@ added home.html ``show_flickr_photoset`` template tag
 * enabled support to ``show_flickr_photoset``
 
 fixed templatetags
-0.2.2 (2015-08-06)
+0.2.3 (2015-08-06)
 ----------------
 * fixed support to ``show_flickr_photoset`` tag
