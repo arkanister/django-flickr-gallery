@@ -145,7 +145,7 @@ class FlickrPhotoIterator(object):
     def __init__(self, photoset_id, per_page=None, page=None, extras=None):
         self.photoset_id = photoset_id
         self.extras = extras or []
-        self.per_page = per_page or settings.PER_PAGE
+        self.per_page = per_page
         self.current_page_number = page
         self.has_paginator = self.per_page is not None
 

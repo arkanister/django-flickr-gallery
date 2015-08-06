@@ -16,14 +16,14 @@ def show_flickr_photoset(context, photoset_id, page=None, per_page=None, templat
 
     object_list = FlickrPhotoIterator(photoset_id, page=page, per_page=per_page)
 
-    context = context.update({
+    context.update({
         'photos': object_list,
         'object_list': object_list,
         'template': template
     })
 
     if object_list.has_paginator:
-        context = context.update({
+        context.update({
             "paginator": object_list.paginator,
             "page": object_list.paginator.page,
             "photos": object_list.paginator.page
