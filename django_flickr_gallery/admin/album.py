@@ -78,7 +78,7 @@ class FlickrAlbumAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         if obj is None:
-            # self.fieldsets = None
+            self.fieldsets = None
             return FlickrCreateAlbumForm
         else:
             return super(FlickrAlbumAdmin, self).get_form(request, obj, **kwargs)

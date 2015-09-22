@@ -21,7 +21,7 @@ class FlickrCreateAlbumForm(forms.ModelForm):
 
     class Meta:
         model = FlickrAlbum
-        fields = ['flickr_album_id']
+        fields = ['flickr_album_id', 'sites']
 
 
 class FlickrUpdateAlbumForm(forms.ModelForm):

@@ -21,7 +21,7 @@ setup(
     keywords='django flickr gallery flickr-gallery',
     long_description=README,
     install_requires=[
-        "Django >= 1.4",
+        "Django >= 1.7",
         "flickrapi",
     ],
     classifiers=[
