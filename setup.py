@@ -1,6 +1,8 @@
 from setuptools import setup, find_packages
 import os
 
+VERSION = __import__('django_flickr_gallery').__version__
+
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
 
@@ -9,7 +11,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-flickr-gallery',
-    version='0.2.4',
+    version=VERSION,
     packages=find_packages(),
     url='http://github.com/arkanister/django-flickr-gallery',
     license='BSD',

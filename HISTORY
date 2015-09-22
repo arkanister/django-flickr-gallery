@@ -18,3 +18,7 @@ Changelog for django-flickr-gallery
 * fixed album sync
 * fixed data errors
 * added support to categories to albuns
+
+0.2.5a.dev1 (2015-09-22)
+----------------
+* sync versions 2.3 and 2.4
