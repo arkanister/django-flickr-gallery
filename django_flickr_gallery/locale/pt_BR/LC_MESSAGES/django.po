@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-10 16:13-0300\n"
+"POT-Creation-Date: 2015-09-22 10:59-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,73 +18,130 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: admin.py:49
+#: admin/album.py:18
+msgid "Metadata"
+msgstr "Metadados"
+
+#: admin/album.py:20
+msgid "Publication"
+msgstr "Publicação"
+
+#: admin/album.py:36
+#, python-format
+msgid "%d album was successfully marked as published."
+msgid_plural "%d albums were successfully marked as published."
+msgstr[0] "%d album publicado com sucesso."
+msgstr[1] "%d albuns publicados com sucesso."
+
+#: admin/album.py:47
+#, python-format
+msgid "%d album was successfully unmarked as published."
+msgid_plural "%d albums were successfully unmarked as published."
+msgstr[0] "%d album despublicado com sucesso."
+msgstr[1] "%d albuns despublicados com sucesso."
+
+#: admin/album.py:61
+#, python-format
+msgid "Error in sync '%s' with message '%s'."
+msgstr "Erro ao sincronizar o album '%s' com a mensagem '%s'."
+
+#: admin/album.py:68
+#, python-format
+msgid "%d album was successfully synced with flick."
+msgid_plural "%d albums were successfully synced with flick."
+msgstr[0] "%d album sincronizado com o flickr com sucesso."
+msgstr[1] "%d albuns sincronizados com o flickr com sucesso."
+
+#: admin/album.py:74
 msgid "Mark selected stories as published"
 msgstr "Publicar registros selecionados"
 
-#: admin.py:50
+#: admin/album.py:75
 msgid "Unmark selected stories as published"
 msgstr "Despublicar registros selecionados"
 
-#: admin.py:51
+#: admin/album.py:76
 msgid "Synchronize selected stories with flickr"
 msgstr "Sincronizar registros selecionados com o flickr"
 
+#: admin/filters.py:28
+#, python-format
+msgid "%(item)s (%(count)i album)"
+msgid_plural "%(item)s (%(count)i albums)"
+msgstr[0] "%(item)s (%(count)i album)"
+msgstr[1] "%(item)s (%(count)i albuns)"
+
+#: admin/filters.py:50 models/album.py:109
+msgid "categories"
+msgstr "categorias"
+
 #: apps.py:7
-#, fuzzy
-#| msgid "Gallery"
 msgid "Flickr Gallery"
-msgstr "Galeria"
+msgstr "Galeria do Flickr"
 
-#: models.py:16
-#, fuzzy
-#| msgid "Select a flickr album."
-msgid "Flickr album"
-msgstr "Selecione o album do flickr."
+#: models/album.py:23
+msgid "flickr album"
+msgstr "album do flickr."
 
-#: models.py:17
+#: models/album.py:24
 msgid "Select a flickr album."
 msgstr "Selecione o album do flickr."
 
-#: models.py:21
-msgid "Used to generate friendly urls."
-msgstr "Utilizado para urls amigáveis."
+#: models/album.py:28
+msgid "Used to build the album's URL."
+msgstr "Utilizado para construir a url do album."
 
-#: models.py:24
-msgid "Title"
+#: models/album.py:31
+msgid "title"
 msgstr "Título"
 
-#: models.py:25
-msgid "Album title."
-msgstr "Título do Album"
-
-#: models.py:28
-msgid "Description"
+#: models/album.py:34
+msgid "description"
 msgstr "Descrição"
 
-#: models.py:29
-msgid "Describe this album here."
-msgstr "Descreva aqui este album."
-
-#: models.py:32
-msgid "Published"
+#: models/album.py:37
+msgid "published"
 msgstr "Publicado"
 
-#: models.py:33
-msgid "Unmark if the album can not be visible."
-msgstr "Desmarque para que o album não seja visto."
-
-#: models.py:36
-msgid "Last Sync"
+#: models/album.py:40
+msgid "last sync"
 msgstr "Última Sincronização"
 
-#: models.py:37
-msgid "The last sync with flickr api."
-msgstr "Ultima sincronização com o flickr."
+#: models/album.py:41
+msgid "Date of last sync with flickr."
+msgstr "Data da última sincronização com o flickr."
 
-#: models.py:40 models.py:41
-msgid "Album"
-msgstr "Album"
+#: models/album.py:46
+msgid "sites"
+msgstr "sites"
+
+#: models/album.py:47
+msgid "Sites where the album will be published."
+msgstr "Sites onde o album será publicado"
+
+#: models/album.py:50 models/category.py:14
+msgid "creation date"
+msgstr "data de criação"
+
+#: models/album.py:53
+msgid "album"
+msgstr "album"
+
+#: models/album.py:54
+msgid "albums"
+msgstr "Albuns"
+
+#: models/category.py:11
+msgid "name"
+msgstr "nome"
+
+#: models/category.py:17
+msgid "Category"
+msgstr "Categoria"
+
+#: models/category.py:18
+msgid "Categories"
+msgstr "Categorias"
 
 #: settings.py:16
 msgid "Need to define FLICKR_API_KEY and FLICKR_SECRET and FLICKR_USER_ID"
@@ -119,3 +176,7 @@ msgstr "próximo"
 #: templates/gallery/flickr/parts/pagination.html:36
 msgid "last"
 msgstr "último"
+
+#: utils.py:76
+msgid "An error occurred while trying to make a call to the flickr."
+msgstr "Um erro ocorreu enquanto tentava estabelecer uma chamada ao flickr."

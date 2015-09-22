@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django_flickr_gallery import settings
 from django_flickr_gallery.models import FlickrAlbum
-from django_flickr_gallery.utils import FlickrPhotoIterator
+from django_flickr_gallery.utils import FlickrPhotoIterator, FlickrCallException
 
 
 class FlickrAlbumListView(ListView):
@@ -14,7 +14,17 @@ class FlickrAlbumListView(ListView):
 
     def get_queryset(self):
         queryset = super(FlickrAlbumListView, self).get_queryset()
-        return queryset.filter(published=True)
+        queryset = queryset.filter(published=True)
+
+        # todo: need to ignore excluded flickr albuns to prevent errors
+        exclude_invalids = []
+        for album in queryset:
+            try:
+                album.photoset
+            except FlickrCallException:
+                exclude_invalids.append(album.id)
+
+        return queryset.exclude(pk__in=exclude_invalids)
 
 
 class FlickrAlbumPhotoListView(DetailView):
@@ -45,7 +55,7 @@ class FlickrAlbumPhotoListView(DetailView):
         context[self.context_photos_name] = object_list
 
         if object_list.has_paginator:
-            context[self.context_photos_name] = object_list.paginator.page
+            context["photos"] = object_list.paginator.page
             context["paginator"] = object_list.paginator
             context["page"] = object_list.paginator.page
 

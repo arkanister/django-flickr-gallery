@@ -1,6 +1,5 @@
-{% if page %}
 <div class="row">
-{% for photo in page %}
+{% for photo in paginator.page %}
     <div class="col-md-2 col-sm-3 col-xs-6">
         <div class="thumbnail">
             <img title="{{ photo.title }}" src="{{ photo.url_q }}"{% if photo.description %} alt="{{ photo.description }}"{% endif %} />
@@ -10,14 +9,3 @@
 </div>
 
 {% include "gallery/flickr/parts/pagination.html" %}
-{% else %}
-<div class="row">
-{% for photo in photos %}
-    <div class="col-md-2 col-sm-3 col-xs-6">
-        <div class="thumbnail">
-            <img title="{{ photo.title }}" src="{{ photo.url_q }}"{% if photo.description %} alt="{{ photo.description }}"{% endif %} />
-        </div>
-    </div>
-{% endfor %}
-</div>
-{% endif %}

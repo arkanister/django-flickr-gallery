@@ -27,4 +27,4 @@ class FlickrCreateAlbumForm(forms.ModelForm):
 class FlickrUpdateAlbumForm(forms.ModelForm):
     class Meta:
         model = FlickrAlbum
-        fields = ['title', 'slug', 'description', 'published']
+        exclude = ['flickr_album_id', 'last_sync']

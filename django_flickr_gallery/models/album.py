@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
@@ -9,36 +10,50 @@ from django.core.cache import cache
 
 import json
 
-class FlickrAlbum(models.Model):
-    """ A model to enable flickr albums to gallery. """
+
+class BaseFlickrAlbum(models.Model):
+    """
+    Abstract core flickr album model class providing
+    the fields and methods required for sync
+    with flickr api albums.
+    """
+
     flickr_album_id = models.CharField(
-        max_length=100, unique=True,
-        verbose_name=_("Flickr album"),
+        max_length=100,
+        verbose_name=_("flickr album"),
         help_text=_("Select a flickr album."))
 
     slug = models.SlugField(
         max_length=130, unique=True,
-        help_text=_("Used to generate friendly urls."))
+        help_text=_("Used to build the album's URL."))
 
     title = models.CharField(
-        _("Title"), max_length=130,
-        help_text=_("Album title."))
+        _("title"), max_length=130)
 
     description = models.TextField(
-        _("Description"),  null=True, blank=True,
-        help_text=_("Describe this album here."))
+        _("description"),  null=True, blank=True)
 
     published = models.BooleanField(
-        _("Published"), default=True,
-        help_text=_("Unmark if the album can not be visible."))
+        _("published"), default=True)
 
     last_sync = models.DateTimeField(
-        _("Last Sync"),
-        help_text=_("The last sync with flickr api."))
+        _("last sync"),
+        help_text=_("Date of last sync with flickr."))
+    
+    sites = models.ManyToManyField(
+        Site,
+        related_name='albums',
+        verbose_name=_('sites'),
+        help_text=_('Sites where the album will be published.'))
+
+    creation_date = models.DateTimeField(
+        _('creation date'), auto_now_add=True)
 
     class Meta:
-        verbose_name = _("Album")
-        verbose_name_plural = _("Album")
+        verbose_name = _("album")
+        verbose_name_plural = _("albums")
+        ordering = ['title']
+        abstract = True
 
     @property
     def photoset(self):
@@ -62,7 +77,7 @@ class FlickrAlbum(models.Model):
         if not self.pk:
             # the first sync
             self.sync(commit=False)
-        super(FlickrAlbum, self).save(*args, **kwargs)
+        super(BaseFlickrAlbum, self).save(*args, **kwargs)
 
     def sync(self, commit=True):
         self.title = self.photoset.title
@@ -79,3 +94,26 @@ class FlickrAlbum(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class FickerAlbumCategories(models.Model):
+    """
+    Abstract model class to categorize the albums.
+    """
+
+    categories = models.ManyToManyField(
+        'django_flickr_gallery.Category',
+        blank=True,
+        related_name='albums',
+        verbose_name=_('categories'))
+
+    class Meta:
+        abstract = True
+
+
+class FlickrAlbum(BaseFlickrAlbum, FickerAlbumCategories):
+    """
+    Final abstract album model class assembling
+    all the abstract album model classes into a single one.
+    """
+
