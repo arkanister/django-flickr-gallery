@@ -1,27 +1,27 @@
 from setuptools import setup, find_packages
 import os
 
-def get_version():
-    version = __import__('django_flickr_gallery').__version__
+APP_NAME = 'django_flickr_gallery'
 
-    if isinstance(version, basestring):
-        return version
+def get_version(version=None):
+    "Returns a PEP 386-compliant version number from VERSION."
+    version = version or __import__(APP_NAME).__version__
 
-    b, m, s, flag, dev = version[:4], 0
+    assert version[3] in ('alpha', 'beta', 'rc', 'final')
 
-    if len(version) == 5:
-        dev = version[5]
+    # Now build the two parts of the version number:
+    # main = X.Y[.Z]
+    # sub = .devN - for pre-alpha releases
+    #     | {a|b|c}N - for alpha, beta and rc releases
+    main = '.'.join(str(x) for x in version[:3])
 
-    version = ".".join(b, m, s)
+    sub = ''
 
-    if flag in ['alpha', 'beta']:
-        version_map = {"alpha": "a", "beta": "b"}
-        if dev == 0:
-            version += version_map[flag]
-        else:
-            version += ".".join(version_map[flag], dev)
+    if version[3] != 'final':
+        mapping = {'alpha': 'a', 'beta': 'b', 'rc': 'c'}
+        sub = mapping[version[3]] + '.dev' + str(version[4])
 
-    return version
+    return str(main + sub)
 
 VERSION = get_version()
 
