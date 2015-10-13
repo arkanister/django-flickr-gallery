@@ -7,17 +7,18 @@ from django_flickr_gallery.utils import FlickrCallException
 
 
 class FlickrAlbumAdmin(admin.ModelAdmin):
-    list_display = ('title', 'url', 'last_sync', 'published')
-    list_filter = (CategoryListFilter, 'published', 'last_sync')
+    list_display = ('title', 'url', 'last_sync', 'status')
+    list_filter = (CategoryListFilter, 'status', 'last_sync')
     filter_horizontal = ['categories', 'sites']
     date_hierarchy = 'last_sync'
     form = FlickrUpdateAlbumForm
 
     fieldsets = (
-        (None, {'fields': ('title', 'description')}),
+        (None, {'fields': ('title', 'description', 'is_featured')}),
         (_("Metadata"), {'fields': ('categories', 'sites'),
                          'classes': ('collapse', 'collapse-closed')}),
-        (_("Publication"), {'fields': ('slug', 'published')}),
+        (_("Publication"), {'fields': ('slug', 'status'),
+                            'classes': ('collapse', 'collapse-closed')}),
     )
 
     actions = ['make_published', 'make_unpublished', 'sync_album']

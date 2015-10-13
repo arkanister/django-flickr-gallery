@@ -1,12 +1,16 @@
 # coding: utf-8
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
+
+from django_flickr_gallery.models.managers import AlbumFeaturedManager
+from django_flickr_gallery.models.managers import AlbumPublishedManager
+
 from django_flickr_gallery.utils import get_photoset, AttributeDict
-from django.core.cache import cache
 
 import json
 
@@ -17,6 +21,9 @@ class BaseFlickrAlbum(models.Model):
     the fields and methods required for sync
     with flickr api albums.
     """
+    HIDDEN = 0
+    PUBLISHED = 1
+    STATUS = ((HIDDEN, _("Hidden")), (PUBLISHED, _("Published")))
 
     flickr_album_id = models.CharField(
         max_length=100,
@@ -33,21 +40,19 @@ class BaseFlickrAlbum(models.Model):
     description = models.TextField(
         _("description"),  null=True, blank=True)
 
-    published = models.BooleanField(
-        _("published"), default=True)
-
     last_sync = models.DateTimeField(
         _("last sync"),
         help_text=_("Date of last sync with flickr."))
-    
-    sites = models.ManyToManyField(
-        Site,
-        related_name='albums',
-        verbose_name=_('sites'),
-        help_text=_('Sites where the album will be published.'))
+
+    status = models.IntegerField(
+        _("status"), default=PUBLISHED,
+        choices=STATUS)
 
     creation_date = models.DateTimeField(
         _('creation date'), auto_now_add=True)
+
+    objects = models.Manager()
+    published = AlbumPublishedManager()
 
     class Meta:
         verbose_name = _("album")
@@ -111,7 +116,34 @@ class FickerAlbumCategories(models.Model):
         abstract = True
 
 
-class FlickrAlbum(BaseFlickrAlbum, FickerAlbumCategories):
+class FlickrAlbumFeatured(models.Model):
+    """
+    Enable support to featured albums.
+    """
+
+    is_featured = models.BooleanField(
+        _("featured"), default=False)
+
+    featured = AlbumFeaturedManager()
+
+    class Meta:
+        abstract = True
+
+
+class FlickrAlbumSites(models.Model):
+
+    sites = models.ManyToManyField(
+        Site,
+        related_name='albums',
+        verbose_name=_('sites'),
+        help_text=_('Sites where the album will be published.'))
+
+    class Meta:
+        abstract = True
+
+
+class FlickrAlbum(BaseFlickrAlbum, FickerAlbumCategories,
+                  FlickrAlbumFeatured, FlickrAlbumSites):
     """
     Final abstract album model class assembling
     all the abstract album model classes into a single one.

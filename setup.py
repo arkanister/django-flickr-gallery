@@ -1,7 +1,29 @@
 from setuptools import setup, find_packages
 import os
 
-VERSION = __import__('django_flickr_gallery').__version__
+def get_version():
+    version = __import__('django_flickr_gallery').__version__
+
+    if isinstance(version, basestring):
+        return version
+
+    b, m, s, flag, dev = version[:4], 0
+
+    if len(version) == 5:
+        dev = version[5]
+
+    version = ".".join(b, m, s)
+
+    if flag in ['alpha', 'beta']:
+        version_map = {"alpha": "a", "beta": "b"}
+        if dev == 0:
+            version += version_map[flag]
+        else:
+            version += ".".join(version_map[flag], dev)
+
+    return version
+
+VERSION = get_version()
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()

@@ -1,0 +1,24 @@
+{% load i18n %}
+
+{% for album, photos in featured %}
+
+<h4>{{ album.title }}</h4>
+
+<p>{{ album.description }}</p>
+
+{% trans 'Preview' %}
+
+<div class="row">
+{% for photo in photos %}
+    <div class="col-md-2 col-sm-3 col-xs-6">
+
+        <div class="thumbnail">
+            <img title="{{ photo.title }}" src="{{ photo.url_q }}"{% if photo.description %} alt="{{ photo.description }}"{% endif %} />
+        </div>
+
+    </div>
+{% endfor %}
+</div>
+{% empty %}
+<p>{% trans 'No any album marked as featured.' %}</p>
+{% endfor %}

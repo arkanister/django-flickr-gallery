@@ -6,31 +6,39 @@ Changelog for django-flickr-gallery
 * Initial project setup
 
 0.1.1 (2015-05-11)
-----------------
+------------------
 * enabled support to ``show_flickr_photoset``
 
 0.2.3 (2015-08-06)
-----------------
+------------------
 * fixed support to ``show_flickr_photoset`` tag
 
 0.2.4 (2015-09-22)
-----------------
+------------------
 * fixed album sync
 * fixed data errors
 * added support to categories to albuns
 
 0.2.5a.dev1 (2015-09-22)
-----------------
+------------------------
 * sync versions 2.3 and 2.4
 
 0.2.5a.dev2 (2015-09-22)
-----------------
+------------------------
 * fixed admin form to create album
 * fixed admin to clear fieldsets in creation action
 
 0.2.5 (2015-09-22)
-----------------
+-----------------
 * fixed merge with versions 2.3 and 2.4
 
-0.2.6
+0.2.6 (2015-09-22)
+------------------
 * enable django migrations without config MIGRATION_MODULES in django settings
+
+0.2.8a.dev1 (2015-10-13)
+------------------------
+* added ``show_flickr_photoset_featured`` template tag
+* fixed model and view to support featured albums
+* fixed status field and added migrations to that
+* fixed views to support ``CallableQuerysetMixin``
