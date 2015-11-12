@@ -49,3 +49,7 @@ Changelog for django-flickr-gallery
 * fixed model and view to support featured albums
 * fixed status field and added migrations to that
 * fixed views to support ``CallableQuerysetMixin``
+
+0.2.9a.dev1 (2015-11-12)
+------------------------
+* added sitemaps support
