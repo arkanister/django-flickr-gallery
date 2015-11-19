@@ -53,3 +53,11 @@ Changelog for django-flickr-gallery
 0.2.9a.dev1 (2015-11-12)
 ------------------------
 * added sitemaps support
+
+0.2.9 (2015-11-12)
+------------------
+* added sitemaps support
+
+0.2.10 (2015-11-19)
+-------------------
+* added paginator tag

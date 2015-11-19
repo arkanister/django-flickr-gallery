@@ -47,3 +47,23 @@ def show_flickr_photoset_featured(context, count=3, count_photos=10, template="g
     })
 
     return context
+
+
+@register.inclusion_tag('gallery/flickr/tags/dummy.html', takes_context=True)
+def paginator(context, page, template='gallery/flickr/tags/pagination.html', adjacent_pages=2):
+    """
+    To be used in conjunction with the object_list generic view.
+
+    Adds pagination context variables for use in displaying first, adjacent and
+    last page links in addition to those created by the object_list generic
+    view.
+    """
+    page_range = [n for n in range(
+        page.number - adjacent_pages,
+        page.number + adjacent_pages + 1) if 0 < n <= page.paginator.num_pages]
+
+    return {
+        'page': page,
+        'page_range': page_range,
+        'request': context['request'],
+        'template': template}

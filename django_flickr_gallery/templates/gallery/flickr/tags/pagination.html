@@ -1,0 +1,24 @@
+{% load i18n %}
+<ul class="pagination">
+
+    <li class="{% if page.number == page.paginator.first_page %}disabled{% endif %}">
+        <a {% if page.number != page.paginator.first_page %}href="?page={{ page.paginator.first_page }}"{% endif %}><i class="fa fa-angle-double-left"></i></a>
+    </li>
+
+    <li class="{% if not page.has_previous %}disabled{% endif %}">
+        <a {% if page.has_previous %}href="?page={{ page.previous_page_number }}"{% endif %}><i class="fa fa-angle-left"></i></a>
+    </li>
+
+    {% for number in page_range %}
+        <li class="{% if page.number == number %}active{% endif %}"><a href="?page={{ number }}">{{ number }}</a></li>
+    {% endfor %}
+
+    <li class="{% if not page.has_next %}disabled{% endif %}">
+        <a {% if page.has_next %}href="?page={{ page.next_page_number }}"{% endif %}><i class="fa fa-angle-right"></i></a>
+    </li>
+
+    <li class="{% if page.number == page.paginator.last_page %}disabled{% endif %}">
+        <a {% if page.number != page.paginator.last_page %}href="?page={{ page.paginator.last_page }}"{% endif %}><i class="fa fa-angle-double-right"></i></a>
+    </li>
+
+</ul>
