@@ -235,7 +235,19 @@ class FlickrPhotoIterator(object):
 
     def _photos(self):
         if self.data is not None:
-            return [serialize_photo(photo) for photo in self.data.get("photo")]
+            photos = []
+            for photo in self.data.get("photo"):
+                base_url = 'https://www.flickr.com/photos/%s/%s/'
+                photo_url = base_url % (self.data.get('owner'), photo.get('id'))
+                photo = serialize_photo(photo)
+                photo.update({
+                    "absolute_url": photo_url,
+                    "absolute_lightbox_url": photo_url + 'lightbox/'
+                })
+
+                photos.append(photo)
+
+            return photos
         return None
     photos = property(_photos)
 
