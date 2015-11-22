@@ -13,10 +13,13 @@ SMALL = 'm'
 SMALL_320 = 'n'
 MEDIUM = '-'
 MEDIUM_640 = 'z'
+MEDIUM_800 = 'c'
 LARGE = 'b'
+LARGE_1600 = 'h'
+LARGE_2048 = 'k'
 ORIGINAL = 'o'
 
-SIZES_LIST = [SMALL_SQUARE, LARGE_SQUARE, THUMBNAIL, SMALL, SMALL_320, MEDIUM, MEDIUM_640, LARGE]
+SIZES_LIST = [SMALL_SQUARE, LARGE_SQUARE, THUMBNAIL, SMALL, SMALL_320, MEDIUM, MEDIUM_640, MEDIUM_800, LARGE, LARGE_1600, LARGE_2048]
 
 
 class FlickrCallException(Exception):
@@ -146,8 +149,16 @@ def serialize_primary(photo, sizes):
             urls["url_" + SMALL_320] = size['source']
         elif size["label"] == "Medium":
             urls["url_" + MEDIUM] = size['source']
+        elif size["label"] == "Medium 640":
+            urls["url_" + MEDIUM_640] = size['source']
+        elif size["label"] == "Medium 800":
+            urls["url_" + MEDIUM_800] = size['source']
         elif size["label"] == "Large":
             urls["url_" + LARGE] = size['source']
+        elif size["label"] == "Large 1600":
+            urls["url_" + LARGE_1600] = size['source']
+        elif size["label"] == "Large 2048":
+            urls["url_" + LARGE_2048] = size['source']
         elif size["label"] == "Original":
             urls['url'] = size['source']
 
