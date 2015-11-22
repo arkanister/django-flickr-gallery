@@ -65,7 +65,7 @@ Templates
 You can override the templates albums and photos, but the default template
 extends the ``base.html`` template.
 
-Use ``LIST_ALBUMS_TEMPLATE`` and ``LIST_PHOTOS_TEMPLATE`` in django settings
+Use ``FLICKR_LIST_ALBUMS_TEMPLATE`` and ``FLICKR_LIST_PHOTOS_TEMPLATE`` in django settings
 to change the templates that will be rendered.::
 
     FLICKR_LIST_ALBUMS_TEMPLATE = 'my_custom_albums_template.html'
