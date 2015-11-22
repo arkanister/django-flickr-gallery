@@ -11,7 +11,7 @@
 
     <li class="{% if not paginator.page.has_previous %}disabled{% endif %}">
         {% if paginator.page.has_previous %}
-            <a href="?page={{ paginator.previous_page_number }}">{% trans 'previous' %}</a>
+            <a href="?page={{ paginator.page.previous_page_number }}">{% trans 'previous' %}</a>
         {% else %}
             <a href="#">{% trans 'previous' %}</a>
         {% endif %}
@@ -23,7 +23,7 @@
 
     <li class="{% if not paginator.page.has_next %}disabled{% endif %}">
         {% if paginator.page.has_next %}
-            <a href="?page={{ paginator.next_page_number }}">{% trans 'next' %}</a>
+            <a href="?page={{ paginator.page.next_page_number }}">{% trans 'next' %}</a>
         {% else %}
             <a href="#">{% trans 'next' %}</a>
         {% endif %}
