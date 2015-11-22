@@ -58,7 +58,7 @@ class FlickrAlbumAdmin(admin.ModelAdmin):
             try:
                 album.sync()
                 successfully_syncs += 1
-            except FlickrCallException, e:
+            except FlickrCallException as e:
                 message_bit = _("Error in sync '%s' with message '%s'.") % (
                     unicode(album),
                     e.message)

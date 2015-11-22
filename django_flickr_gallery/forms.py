@@ -13,8 +13,8 @@ class FlickrCreateAlbumForm(forms.ModelForm):
             photosets = [(photoset['id'], photoset['title']) for photoset in get_photosets()]
             photosets = filter(lambda x: x[0] not in existing_album, photosets)
             choices += tuple(photosets)
-        except FlickrError, e:
-            print e.message
+        except FlickrError as e:
+            print(e.message)
 
         # set choices with flickr albums
         self.fields['flickr_album_id'].widget = forms.Select(choices=choices)

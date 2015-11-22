@@ -66,9 +66,9 @@ def build_flickr_call(module, method, response_format="json", quiet=False, conte
 
     try:
         return command(**context)
-    except FlickrError, e:
+    except FlickrError as e:
         if not quiet:
-            raise FlickrError, e.message
+            raise FlickrError(e.message)
 
 
 def call_json(module, method, quiet=False, context=None):
@@ -81,6 +81,8 @@ def call_json(module, method, quiet=False, context=None):
         response_format='json',
         quiet=quiet, context=context)
 
+    if not isinstance(response, six.text_type):
+        response = response.decode('utf-8')
     response = json.loads(response)
 
     if 'stat' in response and response['stat'] == 'fail':
