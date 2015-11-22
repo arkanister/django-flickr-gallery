@@ -4,6 +4,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 
@@ -15,6 +16,7 @@ from django_flickr_gallery.utils import get_photoset, AttributeDict
 import json
 
 
+@python_2_unicode_compatible
 class BaseFlickrAlbum(models.Model):
     """
     Abstract core flickr album model class providing
@@ -97,7 +99,7 @@ class BaseFlickrAlbum(models.Model):
     def get_absolute_url(self):
         return reverse('gallery-photos', kwargs={"slug": self.slug})
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 

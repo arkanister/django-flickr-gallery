@@ -1,7 +1,9 @@
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 
 
+@python_2_unicode_compatible
 class Category(models.Model):
     """
     Simple model for categorizing flickr albums.
@@ -18,5 +20,5 @@ class Category(models.Model):
         verbose_name_plural = _("Categories")
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
