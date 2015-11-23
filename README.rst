@@ -1,15 +1,10 @@
-.. image:: https://travis-ci.org/arkanister/django-flickr-gallery.svg?branch=master
-    :target: https://travis-ci.org/arkanister/django-flickr-gallery
-
-.. image:: https://pypip.in/v/django-flickr-gallery/badge.png
+.. image:: https://badge.fury.io/py/django-flickr-gallery.svg
    :target: https://pypi.python.org/pypi/django-flickr-gallery
 
-.. image:: https://pypip.in/d/django-flickr-gallery/badge.png
-   :target: https://pypi.python.org/pypi/django-flickr-gallery
-   
 .. image:: https://badge.waffle.io/arkanister/django-flickr-gallery.svg?label=ready&title=Ready
    :target: https://waffle.io/arkanister/django-flickr-gallery
    :alt: 'Stories in Ready' 
+
 
 Django Flickr Gallery
 =====================
