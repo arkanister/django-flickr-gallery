@@ -65,7 +65,7 @@ Templates
 You can override the templates albums and photos, but the default template
 extends the ``base.html`` template.
 
-Use ``LIST_ALBUMS_TEMPLATE`` and ``LIST_PHOTOS_TEMPLATE`` in django settings
+Use ``FLICKR_LIST_ALBUMS_TEMPLATE`` and ``FLICKR_LIST_PHOTOS_TEMPLATE`` in django settings
 to change the templates that will be rendered.::
 
     FLICKR_LIST_ALBUMS_TEMPLATE = 'my_custom_albums_template.html'
@@ -91,7 +91,7 @@ The photoset tag is one way to render only an album at a time. It is useful to s
 To use it you need to know what the photoset id, to identify you go to `How to get photoset id <http://support.averta.net/envato/knowledgebase/find-id-photoset-flickr/>`_.::
 
     home.html
-    {% extends 'base' %}
+    {% extends 'base.html' %}
 
     {% load flickr_tags %}
 
@@ -102,7 +102,7 @@ To use it you need to know what the photoset id, to identify you go to `How to g
 Rendering with a custom template.::
 
     home.html
-    {% extends 'base' %}
+    {% extends 'base.html' %}
 
     {% load flickr_tags %}
 

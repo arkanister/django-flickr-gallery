@@ -1,0 +1,204 @@
+# This file is distributed under the same license as the django_flickr_gallery package.
+#
+# Translators:
+# Nikolay Korotkiy <sikmir@gmail.com>, 2015
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django_flickr_gallery\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-22 23:32+0300\n"
+"PO-Revision-Date: 2015-11-22 21:59+0300\n"
+"Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: admin/album.py:18
+msgid "Metadata"
+msgstr "Метаданные"
+
+#: admin/album.py:20
+msgid "Publication"
+msgstr "Публикация"
+
+#: admin/album.py:37
+#, python-format
+msgid "%d album was successfully marked as published."
+msgid_plural "%d albums were successfully marked as published."
+msgstr[0] "%d альбом успешно опубликован."
+msgstr[1] "%d альбома(ов) успешно опубликованы."
+
+#: admin/album.py:48
+#, python-format
+msgid "%d album was successfully unmarked as published."
+msgid_plural "%d albums were successfully unmarked as published."
+msgstr[0] "%d альбом успешно скрыт."
+msgstr[1] "%d альбома(ов) успешно скрыты."
+
+#: admin/album.py:62
+#, python-format
+msgid "Error in sync '%s' with message '%s'."
+msgstr "Ошибка синхронизации '%s' с сообщением '%s'."
+
+#: admin/album.py:69
+#, python-format
+msgid "%d album was successfully synced with flick."
+msgid_plural "%d albums were successfully synced with flick."
+msgstr[0] "%d альбом успешно синхронизирован с flickr."
+msgstr[1] "%d альбома(ов) успешно синхронизированы с flickr."
+
+#: admin/album.py:75
+msgid "Mark selected stories as published"
+msgstr "Опубликовать выбранное"
+
+#: admin/album.py:76
+msgid "Unmark selected stories as published"
+msgstr "Скрыть выбранное"
+
+#: admin/album.py:77
+msgid "Synchronize selected stories with flickr"
+msgstr "Синхронизировать выбранное с flickr"
+
+#: admin/filters.py:28
+#, python-format
+msgid "%(item)s (%(count)i album)"
+msgid_plural "%(item)s (%(count)i albums)"
+msgstr[0] "%(item)s (%(count)i альбом)"
+msgstr[1] "%(item)s (%(count)i альбома(ов))"
+
+#: admin/filters.py:50 models/album.py:113
+msgid "categories"
+msgstr "категории"
+
+#: apps.py:7
+msgid "Flickr Gallery"
+msgstr "Flickr Галерея"
+
+#: models/album.py:26
+msgid "Hidden"
+msgstr "Скрыто"
+
+#: models/album.py:26
+msgid "Published"
+msgstr "Опубликовано"
+
+#: models/album.py:30
+msgid "flickr album"
+msgstr "flickr альбом"
+
+#: models/album.py:31
+msgid "Select a flickr album."
+msgstr "Выбрать flickr альбом."
+
+#: models/album.py:35
+msgid "Used to build the album's URL."
+msgstr ""
+
+#: models/album.py:38
+msgid "title"
+msgstr "название"
+
+#: models/album.py:41
+msgid "description"
+msgstr "описание"
+
+#: models/album.py:44
+msgid "last sync"
+msgstr "последняя синхронизация"
+
+#: models/album.py:45
+msgid "Date of last sync with flickr."
+msgstr "Время последней синхронизации с flickr."
+
+#: models/album.py:48
+msgid "status"
+msgstr "статус"
+
+#: models/album.py:52 models/category.py:14
+msgid "creation date"
+msgstr "дата создания"
+
+#: models/album.py:58
+msgid "album"
+msgstr "альбом"
+
+#: models/album.py:59
+msgid "albums"
+msgstr "альбомы"
+
+#: models/album.py:125
+msgid "featured"
+msgstr ""
+
+#: models/album.py:138
+msgid "sites"
+msgstr "сайты"
+
+#: models/album.py:139
+msgid "Sites where the album will be published."
+msgstr "Сайты, где альбом будет опубликован."
+
+#: models/category.py:11
+msgid "name"
+msgstr "имя"
+
+#: models/category.py:17
+msgid "Category"
+msgstr "Категория"
+
+#: models/category.py:18
+msgid "Categories"
+msgstr "Категории"
+
+#: settings.py:16
+msgid "Need to define FLICKR_API_KEY and FLICKR_SECRET and FLICKR_USER_ID"
+msgstr "Необходимо определить FLICKR_API_KEY, FLICKR_SECRET и FLICKR_USER_ID"
+
+#: templates/gallery/flickr/album.html:10
+msgid "Gallery"
+msgstr "Галерея"
+
+#: templates/gallery/flickr/album.html:23
+msgid "Show photos"
+msgstr "Показать фото"
+
+#: templates/gallery/flickr/parts/pagination.html:6
+#: templates/gallery/flickr/parts/pagination.html:8
+msgid "first"
+msgstr "в начало"
+
+#: templates/gallery/flickr/parts/pagination.html:14
+#: templates/gallery/flickr/parts/pagination.html:16
+msgid "previous"
+msgstr "назад"
+
+#: templates/gallery/flickr/parts/pagination.html:26
+#: templates/gallery/flickr/parts/pagination.html:28
+msgid "next"
+msgstr "вперед"
+
+#: templates/gallery/flickr/parts/pagination.html:34
+#: templates/gallery/flickr/parts/pagination.html:36
+msgid "last"
+msgstr "в конец"
+
+#: templates/gallery/flickr/photos.html:9
+msgid "photos"
+msgstr "фото"
+
+#: templates/gallery/flickr/tags/featured.html:9
+msgid "Preview"
+msgstr "Просмотр"
+
+#: templates/gallery/flickr/tags/featured.html:23
+msgid "No any album marked as featured."
+msgstr ""
+
+#: utils.py:79
+msgid "An error occurred while trying to make a call to the flickr."
+msgstr "Произошла ошибка при попытке сделать запрос к flickr."

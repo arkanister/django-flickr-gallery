@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load i18n staticfiles sekizai_tags %}
+{% load i18n staticfiles %}
 
 {% block content %}
 <div class="section section-albuns">
@@ -20,7 +20,7 @@
 
                     <h3 class="album-title">{{ album.title }}</h3>
 
-                    <a href="album.get_absolute_url">{% trans 'Show photos' %}</a>
+                    <a href="{{ album.get_absolute_url }}">{% trans 'Show photos' %}</a>
                 
                 </div>
 
