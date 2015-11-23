@@ -104,3 +104,10 @@ Rendering with a custom template.::
     {% block content %}
         {% show_flickr_photoset 'FLICKR_PHOTOSET_ID' template="gallery/flickr/mytemplate.html" %}
     {% endblock content %}
+
+Contributors
+------------
+
+`arkanister <https://github.com/arkanister/>`_
+
+`sikmir <https://github.com/sikmir/>`_
