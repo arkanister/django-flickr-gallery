@@ -2,6 +2,5 @@ include AUTHORS
 include LICENSE
 include README.rst
 include HISTORY
-recursive-include */templates *
-recursive-include */static *
-recursive-include */locale *
+recursive-include django_flick_gallery/ *
+recursive-include example/ *
