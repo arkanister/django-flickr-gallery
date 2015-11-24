@@ -61,3 +61,15 @@ Changelog for django-flickr-gallery
 0.2.10 (2015-11-19)
 -------------------
 * added paginator tag
+
+0.2.11 (2015-11-19)
+-------------------
+* added python 3 support
+* fixed ``the button show photos to album in gallery list is broken, please fix it.``
+* fixed ``Missed dependency: pytz``
+* remove loading sekizai_tags
+* added ``medium 800, large 1600, large 2048 sizes``
+* fix pagination
+* added Russian localization
+* added ``flickr_ckeditor``
+* fixed ``README.rst``
