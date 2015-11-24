@@ -4,6 +4,7 @@ include README.rst
 include HISTORY
 
 recursive-include django_flickr_gallery *
+recursive-include flickr_ckeditor *
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
