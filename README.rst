@@ -105,6 +105,57 @@ Rendering with a custom template.::
         {% show_flickr_photoset 'FLICKR_PHOTOSET_ID' template="gallery/flickr/mytemplate.html" %}
     {% endblock content %}
 
+CKEDITOR plugin
+---------------
+
+The ``flickr_ckeditor`` is a ckeditor plugin to get flickr photos in django ckeditor.
+
+Usage
+
+1. Add ``flickr_ckeditor`` to your INSTALLED_APPS and all the plugins you want, setting like this::
+
+    INSTALLED_APPS = (
+        ...
+
+        'flickr_ckeditor',
+    )
+
+2. Add url setting in ``urls.py``, it needs to be just that way::
+
+    urlpatterns = patterns(''
+        ...
+        url(r'^ckeditor/flickr/', include('flickr_ckeditor.urls')),
+        ...
+    )
+
+3. Add plugin in ckeditor, in ``extraPlugins`` and ``Flickr`` in toolbar::
+
+    CKEDITOR_CONFIGS = {
+        'default':
+            'toolbar_MyToolbar': [
+                ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+                ['Undo', 'Redo'],
+                ['Scayt'],
+                ['Link', 'Unlink', 'Anchor'],
+                ['Image', 'Flickr', 'Table', 'HorizontalRule', 'SpecialChar'],
+                ['Source'],
+                ['Maximize', 'ReadMore'],
+                '/',
+                ['Bold', 'Italic', 'Underline', 'Strike',
+                 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+                ['NumberedList', 'BulletedList', '-',
+                 'Outdent', 'Indent', '-', 'Blockquote'],
+                ['Styles', 'Format'],
+            ],
+            'extraPlugins': 'flickr',
+            'toolbar': 'MyToolbar',
+        },
+    }
+
+4. Be Happy :)
+
+Note that the precision configuration variables are set correctly in django settings.
+
 Contributors
 ------------
 

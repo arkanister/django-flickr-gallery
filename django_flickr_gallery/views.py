@@ -76,24 +76,3 @@ class FlickrAlbumPhotoListView(CallableQuerysetMixin, DetailView):
             context["page"] = iterator.paginator.page
 
         return context
-
-
-class CkeditorFlickrView(View):
-    """
-    A simple view to get flickr photos to customer.
-    """
-    def get(self, request, *args, **kwargs):
-        page = request.GET.get('page')
-        per_page = request.GET.get('per-page')
-
-        photoset_id = request.GET.get('photoset')
-        photoset_list = [(photoset['id'], photoset['title']) for photoset in get_photosets()]
-
-        response_data = {"photosets": photoset_list, 'numOfPages': 1, 'photos': []}
-
-        if photoset_id:
-            iterator = FlickrPhotoIterator(photoset_id, page=page, per_page=per_page)
-            response_data['photos'] = [photo for photo in iterator.paginator.page]
-            response_data['numOfPages'] = iterator.paginator.num_pages
-
-        return JsonResponse(response_data, safe=False)

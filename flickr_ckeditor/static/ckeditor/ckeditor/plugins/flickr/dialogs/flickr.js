@@ -74,7 +74,7 @@ function flickrSelectPhoto(id)
 function flickrLoadPage(perPage, page, photoset)
 {
 
-	$.get('/galeria/ckeditor/', {'per-page': perPage, page: page, photoset: photoset }, function(data) {
+	$.get('/ckeditor/flickr/', {'per-page': perPage, page: page, photoset: photoset }, function(data) {
 		
 		// Reset
 		$("#flickr-paging").html('Page: ');
