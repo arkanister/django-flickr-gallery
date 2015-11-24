@@ -41,6 +41,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 
     'django_flickr_gallery',
+
+    'example.myapp',
+
+    # ckeditor
+    'ckeditor',
+    'ckeditor_uploader',
+    'flickr_ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -100,3 +107,29 @@ STATIC_URL = '/static/'
 FLICKR_API_KEY = os.environ['FLICKR_API_KEY']
 FLICKR_SECRET = os.environ['FLICKR_SECRET']
 FLICKR_USER_ID = os.environ['FLICKR_USER_ID']
+
+
+# ckeditor settings
+CKEDITOR_UPLOAD_PATH = 'uploads/ckeditor/'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar_MyToolbar': [
+            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+            ['Undo', 'Redo'],
+            ['Scayt'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Flickr', 'Table', 'HorizontalRule', 'SpecialChar'],
+            ['Source'],
+            ['Maximize', 'ReadMore'],
+            '/',
+            ['Bold', 'Italic', 'Underline', 'Strike',
+            'Subscript', 'Superscript', '-', 'RemoveFormat'],
+            ['NumberedList', 'BulletedList', '-',
+            'Outdent', 'Indent', '-', 'Blockquote'],
+            ['Styles', 'Format'],
+        ],
+        'extraPlugins': 'flickr',
+        'toolbar': 'MyToolbar',
+    },
+}

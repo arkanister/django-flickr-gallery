@@ -44,6 +44,7 @@ setup(
     long_description=README,
     install_requires=[
         "Django >= 1.7",
+        "django-ckeditor >= 5.0.2",
         "flickrapi",
         "pytz",
     ],

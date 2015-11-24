@@ -12,7 +12,7 @@ CKEDITOR.plugins.add('flickr',
 		{
 			label: 'Flickr',
 			command: 'flickr',
-			icon: this.path + 'flickr.gif'
+			icon: this.path + 'flickr.png'
 		});
 
 		CKEDITOR.dialog.add( 'flickr', this.path + 'dialogs/flickr.js' );

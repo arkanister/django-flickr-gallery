@@ -1,3 +1,5 @@
+var $ = django.jQuery;
+
 CKEDITOR.dialog.add('flickr', function(editor)
 {
 	return {
@@ -57,25 +59,24 @@ CKEDITOR.dialog.add('flickr', function(editor)
 			link.setHtml('<img src="' + selectedPhoto.attr('data-url') + '" alt="' + selectedPhoto.attr('alt') + '" />');
 
 			editor.insertElement(link);
-		}
+		},
+        onShow: function() {
+            flickrLoadPage(50, 1, null);
+        }
 	};
 });
 
-$(document).ready(function() {
-	flickrLoadPage(50, 1, null);
-});
-
-function flickrSelectPhoto(id)
-{
+function flickrSelectPhoto(id) {
 	$('.selected').removeClass('selected');
 	$('#'+id).addClass('selected');
 }
 
-function flickrLoadPage(perPage, page, photoset)
-{
+function flickrLoadPage(perPage, page, photoset) {
+
+    $('#flickr-photos').html('<em>Loadging ...</em>');
 
 	$.get('/ckeditor/flickr/', {'per-page': perPage, page: page, photoset: photoset }, function(data) {
-		
+
 		// Reset
 		$("#flickr-paging").html('Page: ');
 		$("#flickr-photos").html('');
@@ -92,7 +93,6 @@ function flickrLoadPage(perPage, page, photoset)
 		};
 
         for (var i = 0; i < photosets.length; i++) {
-            console.log(i);
             options += '<option value="' + photosets[i][0] + '"' + (photoset == photosets[i][0] ? 'selected="selected"' : '') + '>' + photosets[i][1] + '</option>';
         }
 
@@ -103,17 +103,25 @@ function flickrLoadPage(perPage, page, photoset)
             flickrLoadPage(perPage, page, $(this).val());
         });
 
+        // if not photos
+        if (data.photos.length == 0) {
+
+            if (photoset == null || photoset == '' || photoset == undefined) {
+                $('#flickr-photos').html('<em>Select a photoset</em>');
+            } else {
+                $('#flickr-photos').html('<em>No photos to photoset</em>');
+            }
+
+            return false;
+        }
+
 		// Render photos
 		var image		= '';
 		$.each(data.photos, function(index, value) {
-			
-			image 		= '<a href="javascript:flickrSelectPhoto(\'flickr_' + index + '\');">';
-			image		+= '<img class="flickrPhoto" id="flickr_' + index + '" rel="' + value.absolute_lightbox_url + '" data-url="' + value.url_m + '" " src="' + value.url_q + '" alt="' + value.title + '" />';
-			image 		+= '</a>';
 
-			if ((index+1) % 10 == 0) {
-				image	+= '<br />';
-			}
+			image =  '<a href="javascript:flickrSelectPhoto(\'flickr_' + index + '\');">';
+			image += '<img class="flickrPhoto" id="flickr_' + index + '" rel="' + value.absolute_lightbox_url + '" data-url="' + value.url_m + '" " src="' + value.url_q + '" alt="' + value.title + '" />';
+            image += '</a>';
 
 			$("#flickr-photos").append(image);
 		});
