@@ -1,6 +1,5 @@
 # coding: utf-8
 from django.contrib.sites.models import Site
-from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
@@ -12,8 +11,6 @@ from django_flickr_gallery.models.managers import AlbumFeaturedManager
 from django_flickr_gallery.models.managers import AlbumPublishedManager
 
 from django_flickr_gallery.utils import get_photoset, AttributeDict
-
-import json
 
 
 @python_2_unicode_compatible
@@ -64,13 +61,9 @@ class BaseFlickrAlbum(models.Model):
 
     @property
     def photoset(self):
-        photoset_data = cache.get("flickr_photoset_%s" % self.flickr_album_id)
-        if photoset_data is None:
-            photoset_data = get_photoset(self.flickr_album_id)
-            cache.set("flickr_photoset_%s" % self.slug, json.dumps(photoset_data), 60 * 15)
-        else:
-            photoset_data = json.loads(photoset_data)
-        return AttributeDict(photoset_data)
+        if not hasattr(self, 'photoset_data'):
+            self.photoset_data = AttributeDict(get_photoset(self.flickr_album_id))
+        return self.photoset_data
 
     @property
     def count_photos(self):
