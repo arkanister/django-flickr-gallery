@@ -73,3 +73,13 @@ Changelog for django-flickr-gallery
 * added Russian localization
 * added ``flickr_ckeditor``
 * fixed ``README.rst``
+
+0.3.1 (2015-11-27)
+------------------
+* Removed album cache control, the cache control is used from flickrapi library.
+* Fixed lazy translation should be used for album and category model fields and verbose names values.
+* Fixed managers: filter return a new QuerySet.
+* Fixed mark/unmark stories as published.
+* Fixed flickr ckeditor plugin pagination.
+* Fixed flickr ckeditor plugin scroll.
+* Added photos counter in flickr ckeditor plugin.

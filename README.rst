@@ -131,7 +131,7 @@ Usage
 3. Add plugin in ckeditor, in ``extraPlugins`` and ``Flickr`` in toolbar::
 
     CKEDITOR_CONFIGS = {
-        'default':
+        'default': {
             'toolbar_MyToolbar': [
                 ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
                 ['Undo', 'Redo'],
