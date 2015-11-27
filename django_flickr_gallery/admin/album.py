@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.utils.html import format_html
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import ugettext_lazy as _, ungettext
 from django_flickr_gallery.admin.filters import CategoryListFilter
 from django_flickr_gallery.forms import FlickrCreateAlbumForm, FlickrUpdateAlbumForm
 from django_flickr_gallery.utils import FlickrCallException
@@ -30,7 +30,7 @@ class FlickrAlbumAdmin(admin.ModelAdmin):
 
     # <editor-fold desc="actions">
     def make_published(self, request, queryset):
-        queryset.update(published=True)
+        queryset.update(status=self.model.PUBLISHED)
         count = queryset.count()
 
         message_bit = ungettext(
@@ -41,7 +41,7 @@ class FlickrAlbumAdmin(admin.ModelAdmin):
         self.message_user(request, message_bit)
 
     def make_unpublished(self, request, queryset):
-        queryset.update(published=False)
+        queryset.update(status=self.model.HIDDEN)
         count = queryset.count()
 
         message_bit = ungettext(
