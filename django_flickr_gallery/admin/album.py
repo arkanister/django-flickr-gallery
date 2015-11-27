@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.utils.html import format_html
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import ugettext_lazy as _, ungettext
 from django_flickr_gallery.admin.filters import CategoryListFilter
 from django_flickr_gallery.forms import FlickrCreateAlbumForm, FlickrUpdateAlbumForm
 from django_flickr_gallery.utils import FlickrCallException
