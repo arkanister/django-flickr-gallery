@@ -30,7 +30,7 @@ class FlickrAlbumAdmin(admin.ModelAdmin):
 
     # <editor-fold desc="actions">
     def make_published(self, request, queryset):
-        queryset.update(published=True)
+        queryset.update(status=self.model.PUBLISHED)
         count = queryset.count()
 
         message_bit = ungettext(
@@ -41,7 +41,7 @@ class FlickrAlbumAdmin(admin.ModelAdmin):
         self.message_user(request, message_bit)
 
     def make_unpublished(self, request, queryset):
-        queryset.update(published=False)
+        queryset.update(status=self.model.HIDDEN)
         count = queryset.count()
 
         message_bit = ungettext(
