@@ -20,7 +20,13 @@ class CkeditorFlickrView(View):
 
         if photoset_id:
             iterator = FlickrPhotoIterator(photoset_id, page=page, per_page=per_page)
+
+            if iterator.errors:
+                response_data.update({"errors": iterator.errors})
+                return JsonResponse(response_data)
+
             response_data['photos'] = [photo for photo in iterator.paginator.page]
             response_data['numOfPages'] = iterator.paginator.num_pages
+            response_data['totalOfPhotos'] = iterator.paginator.total
 
-        return JsonResponse(response_data, safe=False)
+        return JsonResponse(response_data)

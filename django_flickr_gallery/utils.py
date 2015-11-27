@@ -201,6 +201,7 @@ class FlickrPhotoIterator(object):
         self.per_page = per_page or settings.PER_PAGE
         self.current_page_number = page
         self.has_paginator = self.per_page is not None
+        self._errors = []
 
     def __repr__(self):
         return "<FlickrPhotoIterator: object>"
@@ -241,8 +242,15 @@ class FlickrPhotoIterator(object):
 
                 response = call_json("photosets", "getPhotos", context=context)
                 self._flickr_response = response.get("photoset")
-            except (FlickrError, FlickrCallException, AttributeError):
+            except FlickrError, e:
                 self._flickr_response = None
+                self._errors.append(e.message)
+            except FlickrCallException, e:
+                self._flickr_response = None
+                self._errors.append(e.message)
+            except AttributeError, e:
+                self._flickr_response = None
+                self._errors.append(e.message)
         return self._flickr_response
     data = property(_flickr_call)
 
@@ -263,6 +271,12 @@ class FlickrPhotoIterator(object):
             return photos
         return None
     photos = property(_photos)
+
+    def _get_errors(self):
+        # call to update errors
+        self.data
+        return self._errors
+    errors = property(_get_errors)
 
 
 class FlickrPage(object):

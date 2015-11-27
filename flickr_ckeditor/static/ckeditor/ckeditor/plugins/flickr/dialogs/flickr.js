@@ -16,20 +16,27 @@ CKEDITOR.dialog.add('flickr', function(editor)
 						type: 'html',
 						html:
                             '<div id="flickr-photoset">' +
-                            '<label class="cke_dialog_ui_labeled_label" for="flickr-photoset-select">Select photoset</label>' +
+                            '<label class="cke_dialog_ui_labeled_label" for="flickr-photoset-select" style="padding-bottom: 10px; display: block;">Select photoset</label>' +
                             '<div class="cke_dialog_ui_labeled_content">' +
                             '<div class="cke_dialog_ui_input_select"><select class="cke_dialog_ui_input_select" id="flickr-photoset-select"></select></div>' +
                             '</div></div>'
 					},
                     {
+						type: 'html',
+						html:
+                        '<style type="text/css">' +
+                        '.label.label-flickr { background-color: #F20072; color: #fff; padding: 2px 4px; }' +
+                        '</style>' +
+                        '<div id="flickr-resume"></div>'
+					},
+                    {
                         type: 'html',
                         html:
                         '<style type="text/css">' +
-                        '#flickr-paging { float: right; margin-top: -40px; margin-right: 5px; }' +
+                        '#flickr-paging { float: right; margin-top: -30px; margin-right: 5px; }' +
                         '#flickr-paging a.paging { font-weight: bold; padding: 2px 5px; margin: 0 2px; color: #fff; background: rgb(60,118,229); }' +
                         '#flickr-paging a.current, #flickr-paging a.paging:hover { background: rgb(242,0,114); }' +
-                        '#flickr-photos { width: 820px; position: relative; }' +
-                        '#flickr-photos::after { display: table; content: ""; clear: both; }' +
+                        '#flickr-photos { width: 840px; position: relative; max-height: 500px; overflow-y: auto; }' +
                         '#flickr-photos a { display: block; float: left; }' +
                         '#flickr-photos img { border: 5px solid white; margin: 2px; }' +
                         '#flickr-photos img.selected, #flickr-photos img:hover { border-color: rgb(242,0,114); }' +
@@ -61,7 +68,7 @@ CKEDITOR.dialog.add('flickr', function(editor)
 			editor.insertElement(link);
 		},
         onShow: function() {
-            flickrLoadPage(50, 1, null);
+            flickrLoadPage(20, 1, null);
         }
 	};
 });
@@ -73,23 +80,25 @@ function flickrSelectPhoto(id) {
 
 function flickrLoadPage(perPage, page, photoset) {
 
-    $('#flickr-photos').html('<em>Loadging ...</em>');
+    $('#flickr-photos').html('<em>Loading ...</em>');
 
 	$.get('/ckeditor/flickr/', {'per-page': perPage, page: page, photoset: photoset }, function(data) {
 
 		// Reset
 		$("#flickr-paging").html('Page: ');
 		$("#flickr-photos").html('');
+		$("#flickr-resume").html('');
         $("#flickr-photoset-select").html('<option value="">----------</option>');
 
 		// Render pagenation
 		var numOfPages	= data.numOfPages;
+		var totalOfPhotos	= data.totalOfPhotos;
         var photosets   = data.photosets;
 		var pages 		= '';
 		var options 	= '';
 
 		for (var i = 1; i <= numOfPages; i++) {
-			pages += '<a class="paging ' + (i == page ? 'current' : '') + '" href="javascript:flickrLoadPage(' + perPage + ',' + i + ',' + photoset + ');">' + i + '</a>';
+			pages += '<a class="paging ' + (i == page ? 'current' : '') + '" href="#" data-page="' + i + '" data-paging="flickr">' + i + '</a>';
 		};
 
         for (var i = 0; i < photosets.length; i++) {
@@ -98,13 +107,31 @@ function flickrLoadPage(perPage, page, photoset) {
 
 		$("#flickr-paging").append(pages);
         $("#flickr-photoset-select").append(options);
+        $("#flickr-resume").append('<span class="label label-flickr label-default">' + (totalOfPhotos ? totalOfPhotos : 0) +' PHOTOS</span>');
 
         $("#flickr-photoset-select").unbind().on('change', function () {
-            flickrLoadPage(perPage, page, $(this).val());
+            flickrLoadPage(perPage, 1, $(this).val());
         });
+
+        $("[data-paging='flickr']").unbind().on('click', function () {
+            //  data-per-page="' + perPage + '" data-page="' + page + '" data-photoset-id="' + photoset + '"
+            flickrLoadPage(perPage, $(this).attr('data-page'), photoset);
+        });
+
+        if ('errors' in data) {
+            $("#flickr-resume").html('');
+            $('#flickr-photos').html('');
+
+            for (var i = 0; i < data.errors.length; i++) {
+                $('#flickr-photos').append('<p style="color: red;">' + data.errors[i] + '</p>');
+            }
+
+            return false;
+        }
 
         // if not photos
         if (data.photos.length == 0) {
+            $("#flickr-resume").html('');
 
             if (photoset == null || photoset == '' || photoset == undefined) {
                 $('#flickr-photos').html('<em>Select a photoset</em>');
