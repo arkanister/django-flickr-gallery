@@ -1,4 +1,4 @@
-from django.template.base import Library
+from django.template import Library
 from django_flickr_gallery.models.album import FlickrAlbum
 
 from django_flickr_gallery.utils import FlickrPhotoIterator
