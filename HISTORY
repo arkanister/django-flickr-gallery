@@ -83,3 +83,9 @@ Changelog for django-flickr-gallery
 * Fixed flickr ckeditor plugin pagination.
 * Fixed flickr ckeditor plugin scroll.
 * Added photos counter in flickr ckeditor plugin.
+
+0.3.2 (2015-12-11)
+------------------
+* fixed python 3 support (except syntax)
+* fixed import error (Django 1.9)
+* fixed example (wrong urls)
