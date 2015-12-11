@@ -242,13 +242,13 @@ class FlickrPhotoIterator(object):
 
                 response = call_json("photosets", "getPhotos", context=context)
                 self._flickr_response = response.get("photoset")
-            except FlickrError, e:
+            except FlickrError as e:
                 self._flickr_response = None
                 self._errors.append(e.message)
-            except FlickrCallException, e:
+            except FlickrCallException as e:
                 self._flickr_response = None
                 self._errors.append(e.message)
-            except AttributeError, e:
+            except AttributeError as e:
                 self._flickr_response = None
                 self._errors.append(e.message)
         return self._flickr_response
