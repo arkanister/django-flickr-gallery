@@ -50,7 +50,6 @@ def get_flickr_object():
         settings.API_KEY, settings.SECRET,
         cache=settings.FLICKR_CACHE,
         store_token=settings.FLICKR_STORE_TOKEN)
-    flickr.cache = settings.FLICKR_CACHE_BACKEND
     return flickr
 
 
