@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-23 18:26-0300\n"
+"POT-Creation-Date: 2016-02-24 16:27-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: admin/photoset.py:23
+msgid "cover"
+msgstr "capa"
+
+#: admin/photoset.py:25
+msgid "title"
+msgstr "título"
+
+#: admin/photoset.py:26
+msgid "description"
+msgstr "descrição"
+
+#: admin/photoset.py:27
+#| msgid "photoset"
+msgid "photos"
+msgstr "fotos"
+
+#: admin/photoset.py:28
+msgid "last update"
+msgstr "última atualização"
 
 #: apps.py:7
 msgid "Flickr Gallery"
@@ -40,16 +61,14 @@ msgid "creation date"
 msgstr "data de criação"
 
 #: models/photoset.py:20
-#| msgid "Show photos"
 msgid "photoset"
 msgstr "album"
 
 #: models/photoset.py:21
-#| msgid "Show photos"
 msgid "photosets"
 msgstr "albums"
 
-#: settings.py:16
+#: settings.py:18
 msgid "Need to define FLICKR_API_KEY and FLICKR_SECRET and FLICKR_USER_ID"
 msgstr ""
 "É necessário definir FLICKR_API_KEY, FLICKR_SECRET e FLICKR_USER_ID nas "
@@ -62,10 +81,6 @@ msgstr "Galeria"
 #: templates/gallery/flickr/photoset_list.html:26
 msgid "Show photos"
 msgstr "Ver Fotos"
-
-#: templates/gallery/flickr/tags/featured.html:9
-msgid "Preview"
-msgstr "Visualizar"
 
 #: templates/gallery/flickr/tags/featured.html:23
 msgid "No any album marked as featured."
