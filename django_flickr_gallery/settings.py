@@ -3,6 +3,9 @@ from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext as _
 from flickrapi.cache import SimpleCache
 
+from django_flickr_gallery.paginator import Paginator
+
+
 ##############################
 ###### REQUIRED SETTIGS ######
 ##############################
@@ -19,8 +22,11 @@ except AttributeError:
 ##############################
 ###### OPTIONAL SETTIGS ######
 ##############################
-LIST_ALBUMS_TEMPLATE = getattr(settings, 'FLICKR_LIST_ALBUMS_TEMPLATE', "gallery/flickr/album.html")
-LIST_PHOTOS_TEMPLATE = getattr(settings, 'FLICKR_LIST_PHOTOS_TEMPLATE', "gallery/flickr/photos.html")
+PHOTOSETS_LIST_TEMPLATE = getattr(settings, 'FLICKR_PHOTOSETS_LIST_TEMPLATE', "gallery/flickr/photoset_list.html")
+PHOTOS_LIST_TEMPLATE = getattr(settings, 'FLICKR_PHOTOS_LIST_TEMPLATE', "gallery/flickr/photos.html")
+
+PHOTOSET_LIST_VIEW = getattr(settings, 'FLICKR_PHOTOSET_LIST_VIEW', 'django_flickr_gallery.FlickrPhotosetListView')
+PHOTO_LIST_VIEW = getattr(settings, 'FLICKR_PHOTO_LIST_VIEW', 'django_flickr_gallery.FlickrPhotosListView')
 
 ##############################
 ###### PAGINATOR SETTIGS #####
@@ -34,6 +40,7 @@ PHOTOSETS_PER_PAGE = getattr(settings, 'FLICKR_PHOTOSETS_PER_PAGE', 10)
 ###########################
 ###### OTHER SETTIGS ######
 ###########################
-FLICKR_STORE_TOKEN = STORE_TOKEN = False
-FLICKR_CACHE = CACHE = True
-FLICKR_CACHE_BACKEND = CACHE_BACKEND = SimpleCache()
+STORE_TOKEN = False
+CACHE = True
+CACHE_BACKEND = SimpleCache()
+PAGINATOR_CLASS = Paginator

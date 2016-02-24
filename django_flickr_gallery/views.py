@@ -1,4 +1,3 @@
-# coding: utf-8
 from django.views.generic.base import TemplateView
 from django_flickr_gallery import settings
 from django_flickr_gallery.base import Photoset
@@ -65,13 +64,11 @@ class PaginatedMixin(object):
             context[context_object_name] = object_list
 
         context.update(kwargs)
-
-        print context
         return super(PaginatedMixin, self).get_context_data(**context)
 
 
-class FlickrAlbumListView(PaginatedMixin, TemplateView):
-    template_name = settings.LIST_ALBUMS_TEMPLATE
+class FlickrPhotosetListView(PaginatedMixin, TemplateView):
+    template_name = getattr(settings, 'PHOTOSETS_LIST_TEMPLATE')
     paginate_by = getattr(settings, 'PHOTOSETS_PER_PAGE')
     page_field = getattr(settings, 'PAGE_FIELD')
     per_page_field = getattr(settings, 'PER_PAGE_FIELD')
@@ -82,8 +79,8 @@ class FlickrAlbumListView(PaginatedMixin, TemplateView):
         return photosets, paginator, page
 
 
-class FlickrAlbumPhotoListView(PaginatedMixin, TemplateView):
-    template_name = settings.LIST_PHOTOS_TEMPLATE
+class FlickrPhotosListView(PaginatedMixin, TemplateView):
+    template_name = getattr(settings, 'PHOTOS_LIST_TEMPLATE')
     paginate_by = getattr(settings, 'PHOTOS_PER_PAGE')
     page_kwarg = getattr(settings, 'PAGE_FIELD')
     per_page_field = getattr(settings, 'PER_PAGE_FIELD')
@@ -96,6 +93,6 @@ class FlickrAlbumPhotoListView(PaginatedMixin, TemplateView):
         return photos, paginator, page
 
     def get_context_data(self, **kwargs):
-        context = super(FlickrAlbumPhotoListView, self).get_context_data(**kwargs)
+        context = super(FlickrPhotosListView, self).get_context_data(**kwargs)
         context['photoset'] = self.photoset
         return context

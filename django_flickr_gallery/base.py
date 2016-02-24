@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.utils.translation import ugettext as _
 from django_flickr_gallery import settings
-from django_flickr_gallery.paginator import get_paginator
+from django_flickr_gallery.shortcuts import get_paginator
 
 from flickrapi import FlickrAPI as BaseFlickrAPI, FlickrError
 
@@ -52,7 +52,7 @@ def _get_direct_url(size):
 class Photo(object):
     """Represents a Flickr Photo."""
     def __init__(self, id, secret=None, server=None, farm=None,
-                 tags=None, title=None, url=None,
+                 tags=None, title=None,
                  description=None, data=None):
         """Must specify id, rest is optional."""
         self.id = id
@@ -64,7 +64,6 @@ class Photo(object):
             farm = data.get('farm', farm)
             title = data.get('title', title)
             description = data.get('description', description)
-            url = data.get('url', url)
 
         self.__title = title
         self.__description = description
@@ -72,7 +71,6 @@ class Photo(object):
         self.server = server
         self.farm = farm
         self.tags = tags
-        self.url = url
 
     @staticmethod
     def getInfo(id):
@@ -81,6 +79,20 @@ class Photo(object):
     @staticmethod
     def getList(id, photoset_id):
         pass
+
+    def _val(self, key):
+        return super(Photoset, self).__getattribute__(key)
+
+    def __getattr__(self, item):
+        try:
+            val = self._val(item)
+
+        except AttributeError, e:
+            val = self._data.get(item, None)
+
+            if val is None:
+                raise AttributeError(e)
+        return val
 
     def __get_title(self):
         if self.__title is None:
@@ -101,6 +113,10 @@ class Photo(object):
             self.__description = self.__description.get('_content', None)
         return self.__description
     description = property(__get_description)
+
+    def __url(self):
+        return 'https://www.flickr.com/photos/%s/%s/' % (USER_ID, self.id)
+    url = property(__url)
 
     def __repr__(self):
         return '<Flickr Photo: %s>' % self.id
@@ -141,7 +157,7 @@ class Photoset(object):
         self.primary = primary
         self.__title = title
         self.__description = description
-        self.__count = photos
+        self.count = photos
 
     def __get_title(self):
         if self.__title is None:
@@ -167,14 +183,14 @@ class Photoset(object):
         return super(Photoset, self).__getattribute__(key)
 
     def __getattr__(self, item):
-        val = self._val(item)
+        try:
+            val = self._val(item)
 
-        if val is None:
+        except AttributeError, e:
             val = self._data.get(item, None)
 
             if val is None:
-                raise AttributeError
-
+                raise AttributeError(e)
         return val
 
     def __len__(self):
@@ -213,17 +229,21 @@ class Photoset(object):
                 raise FlickrError(e.message)
 
     @staticmethod
-    def getList(user_id=USER_ID, page=None, per_page=None, quiet=True, **params):
+    def getList(user_id=USER_ID, page=None, per_page=None, **params):
         """
-        Get list of photosets
+        Get list of photosets. Allow paginator
         :param user_id:
+            The NSID of the user to get a photoset list for.
+            If none is specified, the calling user is assumed.
         :param page:
+            The page of results to return. If this argument is omitted, it
+            defaults to 1.
         :param per_page:
-        :param primary_photo_extras:
-        :param quiet:
-        :param _format:
-        :param kwargs:
-        :return:
+            Number of photos to return per page. If this argument is
+            omitted, it defaults to 500. The maximum allowed value is 500.
+        :param params:
+            Extra params to request in flickr api.
+        :return: object_list, paginator and page_obj
         """
         flickr = FlickrAPI.construct()
 
@@ -246,28 +266,28 @@ class Photoset(object):
                 if not _photosets:
                     return None
 
-                return [
+                return (
                     _photosets['photoset'],
                     _photosets['total'],
                     _photosets['page'],
                     _photosets['perpage'],
                     _photosets['pages']
-                ]
+                )
 
             photosets, total, page, per_page, pages = parse_reponse(response)
             photosets = [Photoset(id=photoset['id'], data=photoset) for photoset in photosets]
-            paginator, page = None, None
+            paginator, page_obj = None, None
 
             if per_page is not None:
-                paginator, page = get_paginator(
+                paginator, page_obj = get_paginator(
                     photosets, page=page, per_page=per_page,
                     pages=pages, total=total)
 
-            return photosets, paginator, page
+            return photosets, paginator, page_obj
 
         except FlickrError, e:
-            if not quiet:
-                raise FlickrError(e.message)
+            if e.code == 1:
+                raise Http404(_("Photosets not found."))
 
     def getPhotos(self, user_id=USER_ID, page=None, per_page=None, privacy_filter=1, **params):
         """
@@ -293,7 +313,7 @@ class Photoset(object):
             5 completely private photos
         :param params:
             Extra params to request in flickr api.
-        :return: object_list, paginator and page
+        :return: object_list, paginator and page_obj
         """
         flickr = FlickrAPI.construct()
 
@@ -330,17 +350,21 @@ class Photoset(object):
             photos, total, page, per_page, pages = parse_reponse(response)
             photos = [Photo(photo['id'], data=photo) for photo in photos]
 
-            paginator, page = None, None
+            paginator, page_obj = None, None
 
             if per_page is not None:
-                paginator, page = get_paginator(
+                paginator, page_obj = get_paginator(
                     photos, page=page, per_page=per_page,
                     pages=pages, total=total)
 
-            return photos, paginator, page
+            return photos, paginator, page_obj
         except FlickrError, e:
             if e.code == 1:
                 raise Http404(_("Photoset %s not found.") % self.id)
+
+    def __url(self):
+        return 'https://www.flickr.com/photos/%s/sets/%s/' % (USER_ID, self.id)
+    url = property(__url)
 
     def get_absolute_url(self):
         return reverse('gallery-photos', kwargs={"photoset_id": self.id})

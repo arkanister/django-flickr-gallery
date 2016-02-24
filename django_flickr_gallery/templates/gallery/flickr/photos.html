@@ -1,36 +1,38 @@
 {% extends 'base.html' %}
 
+{% load flickr_tags %}
+
 {% block content %}
 <div class="container">
     <h4 class="header">
-        {{ album.title }}
+        {{ photoset.title }}
         <span class="badge badge-success pull-right">{{ paginator.total }} photos</span>
     </h4>
 
-    <p>{{ album.photoset.description }}</p>
+    {% if photoset.description %}
+        <p>{{ photoset.description }}</p>
+    {% endif %}
 
-    {% if page %}
     <div class="row">
-    {% for photo in page %}
-        <div class="col-md-2 col-sm-3 col-xs-6">
+        {% for photo in photos %}
+        <div class="col-md-2 col-sm-3 col-xs-4">
+
             <div class="thumbnail">
-                <img title="{{ photo.title }}" src="{{ photo.url_q }}"{% if photo.description %} alt="{{ photo.description }}"{% endif %} />
+
+                <img title="{{ photo.title }}"
+                     class="img-responsive"{% if photo.description %} alt="{{ photo.description }}"{% endif %}
+                     src="{{ photo.large_square_url }}" />
+
             </div>
+
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 
-    {% include "gallery/flickr/parts/pagination.html" %}
-    {% else %}
-    <div class="row">
-    {% for photo in photos %}
-        <div class="col-md-2 col-sm-3 col-xs-6">
-            <div class="thumbnail">
-                <img title="{{ photo.title }}" src="{{ photo.url_q }}"{% if photo.description %} alt="{{ photo.description }}"{% endif %} />
-            </div>
-        </div>
-    {% endfor %}
-    </div>
+    {% if is_paginated %}
+
+        {% paginator page_obj %}
+
     {% endif %}
 
 </div>

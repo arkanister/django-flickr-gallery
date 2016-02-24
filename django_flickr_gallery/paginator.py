@@ -104,14 +104,3 @@ class Paginator(object):
     def _last_page(self):
         return self.num_pages
     last_page = property(_last_page)
-
-
-def get_paginator(iterator, page=None, per_page=10, pages=None, total=None):
-    paginator = Paginator(
-        iterator, per_page=per_page,
-        page=page, pages=pages,
-        total=total)
-
-    page = paginator.page
-
-    return paginator, page

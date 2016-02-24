@@ -60,11 +60,23 @@ Templates
 You can override the templates albums and photos, but the default template
 extends the ``base.html`` template.
 
-Use ``FLICKR_LIST_ALBUMS_TEMPLATE`` and ``FLICKR_LIST_PHOTOS_TEMPLATE`` in django settings
+Use ``FLICKR_PHOTOSETS_LIST_TEMPLATE`` and ``FLICKR_PHOTOS_LIST_TEMPLATE`` in django settings
 to change the templates that will be rendered.::
 
-    FLICKR_LIST_ALBUMS_TEMPLATE = 'my_custom_albums_template.html'
-    FLICKR_LIST_PHOTOS_TEMPLATE = 'my_custom_photos_template.html'
+    FLICKR_PHOTOSETS_LIST_TEMPLATE = 'my_custom_albums_template.html'
+    FLICKR_PHOTOS_LIST_TEMPLATE = 'my_custom_photos_template.html'
+
+Photosets Pagination
+--------------------
+
+The application allows a setting for the paging of photos, so you can set how many
+photos will be displayed per page.
+
+Set ``FLICKR_PHOTOSETS_PER_PAGE`` in django settings to change the number of photos per page.::
+
+    FLICKR_PHOTOSETS_PER_PAGE = NEW_VALUE (default=10)
+
+Set ``FLICKR_PHOTOSETS_PER_PAGE`` as None to disable pagination.
 
 Photo Pagination
 ----------------
@@ -72,14 +84,19 @@ Photo Pagination
 The application allows a setting for the paging of photos, so you can set how many
 photos will be displayed per page.
 
-Set ``FLICKR_PER_PAGE`` in django settings to change the number of photos per page.::
+Set ``FLICKR_PHOTOS_PER_PAGE`` in django settings to change the number of photos per page.::
 
-    FLICKR_PER_PAGE = NEW_VALUE (default=10)
+    FLICKR_PHOTOS_PER_PAGE = NEW_VALUE (default=10)
 
-Set ``FLICKR_PER_PAGE`` as None to disable pagination.
+Set ``FLICKR_PHOTOS_PER_PAGE`` as None to disable pagination.
 
-Photoset Tag
-------------
+
+Template Tags
+-------------
+
+Available tags
+
+*get_photos_by_photoset*
 
 The photoset tag is one way to render only an album at a time. It is useful to show pictures to a specific page.
 
@@ -91,10 +108,13 @@ To use it you need to know what the photoset id, to identify you go to `How to g
     {% load flickr_tags %}
 
     {% block content %}
-        {% show_flickr_photoset 'FLICKR_PHOTOSET_ID' %}
+        {% get_photos_by_photoset 'FLICKR_PHOTOSET_ID' template_name="gallery/flickr/mytemplate.html" %}
     {% endblock content %}
 
-Rendering with a custom template.::
+
+*get_featured_photosets*
+
+Can show some photosets with some pictures to display, like as summary of the each photoset::
 
     home.html
     {% extends 'base.html' %}
@@ -102,7 +122,20 @@ Rendering with a custom template.::
     {% load flickr_tags %}
 
     {% block content %}
-        {% show_flickr_photoset 'FLICKR_PHOTOSET_ID' template="gallery/flickr/mytemplate.html" %}
+        {% get_photos_by_photoset count=3 count_photos=10 template_name="gallery/flickr/mytemplate.html" %}
+    {% endblock content %}
+
+*paginator*
+
+Render the paginator of photosets or photos, required ``page_obj``::
+
+    home.html
+    {% extends 'base.html' %}
+
+    {% load flickr_tags %}
+
+    {% block content %}
+        {% paginator page_obj %}
     {% endblock content %}
 
 CKEDITOR plugin

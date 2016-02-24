@@ -1,0 +1,16 @@
+{% load flickr_tags %}
+
+<div class="row">
+{% for photo in page_obj %}
+    <div class="col-md-1 col-sm-2 col-xs-4">
+        <div class="thumbnail">
+            <img title="{{ photo.title }}" src="{{ photo.large_square_url }}"{% if photo.description %} alt="{{ photo.description }}"{% endif %} />
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+
+{% if is_paginated %}
+    {% paginator page_obj %}
+{% endif %}

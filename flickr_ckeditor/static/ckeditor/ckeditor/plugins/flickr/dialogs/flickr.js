@@ -144,10 +144,16 @@ function flickrLoadPage(perPage, page, photoset) {
 
 		// Render photos
 		var image		= '';
-		$.each(data.photos, function(index, value) {
+		$.each(data.photos, function(index, photo) {
 
 			image =  '<a href="javascript:flickrSelectPhoto(\'flickr_' + index + '\');">';
-			image += '<img class="flickrPhoto" id="flickr_' + index + '" rel="' + value.absolute_lightbox_url + '" data-url="' + value.url_m + '" " src="' + value.url_q + '" alt="' + value.title + '" />';
+
+			image += '<img class="flickrPhoto" id="flickr_' + index +
+                '" rel="' + photo.url +
+                '" data-url="' + photo.medium_url +
+                '" src="' + photo.large_square_url +
+                '" alt="' + photo.title + '" />';
+
             image += '</a>';
 
 			$("#flickr-photos").append(image);

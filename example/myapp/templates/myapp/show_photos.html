@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% load flickr_tags %}
+
+{% block content %}
+
+    <h1>Featured Photosets</h1>
+
+    {% get_featured_photosets %}
+
+{% endblock %}

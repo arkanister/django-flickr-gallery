@@ -1,9 +1,13 @@
 from django.conf.urls import patterns, url
 
-from django_flickr_gallery.views import FlickrAlbumListView
-from django_flickr_gallery.views import FlickrAlbumPhotoListView
+from django_flickr_gallery import settings
+from django_flickr_gallery.utils.import_tools import load_view
+
+photoset_list_view = load_view(getattr(settings, 'PHOTOSET_LIST_VIEW'))
+photo_list_view = load_view(getattr(settings, 'PHOTO_LIST_VIEW'))
+
 
 urlpatterns = patterns('',
-    url(r'^$', FlickrAlbumListView.as_view(), name='gallery-album'),
-    url(r'^(?P<photoset_id>.+)/$', FlickrAlbumPhotoListView.as_view(), name='gallery-photos'),
+    url(r'^$', photoset_list_view, name='flickr-photoset-list'),
+    url(r'^(?P<photoset_id>.+)/$', photo_list_view, name='flickr-photo-list'),
 )

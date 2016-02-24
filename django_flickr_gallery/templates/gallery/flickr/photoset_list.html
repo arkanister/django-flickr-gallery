@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load i18n staticfiles flickr_tags %}
+
+{% block content %}
+<div class="section section-albuns">
+
+    <div class="container">
+
+        <h1>{% trans 'Gallery' %}</h1>
+
+        <div class="row">
+            {% for photoset in photosets %}
+            <div class="col-md-2 col-sm-4 col-xs-6">
+
+                <div class="thumbnail">
+
+                    <img src="{{ photoset.primary.large_square_url }}"
+                         class="img-responsive"{% if photoset.description %} alt="{{ photoset.description }}"{% endif %}
+                         title="{{ photoset.title }}" />
+                
+                </div>
+
+                <p class="h4 text-uppercase">{{ photoset.title }}</p>
+
+                <p><a href="{{ photoset.get_absolute_url }}">{% trans 'Show photos' %}</a></p>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if is_paginated %}
+
+            {% paginator page_obj %}
+
+        {% endif %}
+
+    </div>
+
+
+</div>
+{% endblock content %}

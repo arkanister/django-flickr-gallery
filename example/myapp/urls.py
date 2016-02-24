@@ -1,5 +1,5 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
-urlpatterns = patterns('',
-    # write your urls here
+urlpatterns = patterns('example.myapp.views',
+    url('^$', 'get_featured_photosets', name='get_featured_photosets'),
 )

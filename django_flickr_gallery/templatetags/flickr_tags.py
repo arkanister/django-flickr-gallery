@@ -1,69 +1,104 @@
 from django.template import Library
-from django_flickr_gallery.models.album import FlickrAlbum
-
-from django_flickr_gallery.utils import FlickrPhotoIterator
-from django_flickr_gallery.settings import PER_PAGE_FIELD
+from django_flickr_gallery.base import Photoset
+from django_flickr_gallery import models
+from django_flickr_gallery import settings
 
 register = Library()
 
 
+PAGE_FIELD = getattr(settings, 'PAGE_FIELD')
+
+
 @register.inclusion_tag("gallery/flickr/tags/dummy.html", takes_context=True)
-def show_flickr_photoset(context, photoset_id, page=None, per_page=None, template="gallery/flickr/photoset.html"):
+def get_photos_by_photoset(context, photoset_id, page=None, per_page=None,
+                           template_name="gallery/flickr/tags/photoset.html"):
+    """
+    Get photos by photoset_id. Allow paginator.
+    :param context:
+        Context object.
+    :param photoset_id:
+        Photoset id to get a photoset.
+    :param page:
+        Current page number.
+    :param per_page:
+        How many objects per page.
+    :param template_name:
+        Template to render tag.
+    :return: context object.
+    """
     request = context['request']
 
     # get page number
     if per_page is not None:
-        page = page or request.GET.get(PER_PAGE_FIELD, None)
+        page = page or request.GET.get(PAGE_FIELD, None)
 
-    object_list = FlickrPhotoIterator(photoset_id, page=page, per_page=per_page)
+    photoset = Photoset(id=photoset_id)
+    photos, paginator, page_obj = photoset.getPhotos(page=page, per_page=per_page)
+    is_paginated = paginator is not None and page_obj is not None
 
-    context.update({
-        'photos': object_list,
-        'object_list': object_list,
-        'template': template
-    })
+    context = {
+        'photoset': photoset,
+        'photos': photos,
+        'object_list': photos,
+        'template': template_name
+    }
 
-    if object_list.has_paginator:
+    if is_paginated:
         context.update({
-            "paginator": object_list.paginator,
-            "page": object_list.paginator.page,
-            "photos": object_list.paginator.page
+            'is_paginated': True,
+            'paginator': paginator,
+            'page_obj': page_obj
         })
 
     return context
 
 
 @register.inclusion_tag("gallery/flickr/tags/dummy.html", takes_context=True)
-def show_flickr_photoset_featured(context, count=3, count_photos=10, template="gallery/flickr/tags/featured.html"):
+def get_featured_photosets(context, count=3, count_photos=10,
+                           template_name="gallery/flickr/tags/featured.html"):
+    """
+    Get from database featured photosets. Not allow paginator.
+    :param context:
+        Context object.
+    :param count:
+        Counts photosets to get.
+    :param count_photos:
+        How many photos limit by photosets.
+    :param template_name:
+        Template to render tag.
+    :return: context object.
+
+    Usage:
+        >>> {% load flickr_tags %}
+        >>> {% get_featured_photosets count=1 count_photos=10 template_name="gallery/flickr/another_template.html" %}
+    """
     object_list = []
 
-    for album in FlickrAlbum.featured.all()[:count]:
-        photos = FlickrPhotoIterator(album.flickr_album_id).photos[:count_photos]
-        object_list.append((album, photos))
+    for photoset in models.Photoset.objects.all()[:count]:
+        photos, paginator, page_obj = photoset.get_photos_paginated(page=1, per_page=count_photos)
+        object_list.append((photoset, photos))
 
     context.update({
         'featured': object_list,
-        'template': template
+        'template': template_name
     })
-
     return context
 
 
-@register.inclusion_tag('gallery/flickr/tags/dummy.html', takes_context=True)
-def paginator(context, page, template='gallery/flickr/tags/pagination.html', adjacent_pages=2):
+@register.inclusion_tag('gallery/flickr/tags/dummy.html', name='paginator', takes_context=True)
+def do_paginator(context, page_obj, template_name='gallery/flickr/tags/pagination.html'):
     """
-    To be used in conjunction with the object_list generic view.
-
-    Adds pagination context variables for use in displaying first, adjacent and
-    last page links in addition to those created by the object_list generic
-    view.
+    Simple paginator to shows pages in list with specific template.
+    :param context: Base view context.
+    :param page_obj: page object.
+    :param template_name: template name to render this.
+    :return: Context object
     """
-    page_range = [n for n in range(
-        page.number - adjacent_pages,
-        page.number + adjacent_pages + 1) if 0 < n <= page.paginator.num_pages]
+    request = context.get('request')
 
     return {
-        'page': page,
-        'page_range': page_range,
-        'request': context['request'],
-        'template': template}
+        'paginator': page_obj.paginator,
+        'page_obj': page_obj,
+        'request': request,
+        'template': template_name
+    }

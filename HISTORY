@@ -89,3 +89,16 @@ Changelog for django-flickr-gallery
 * fixed python 3 support (except syntax)
 * fixed import error (Django 1.9)
 * fixed example (wrong urls)
+
+0.4.0 (2015-12-11)
+------------------
+* changed photoset list view to shows photosets directly from flickr
+* added pagination to  photoset list view
+* changed core requests to flickr
+* excluded categories model
+* excluded flickralbum model
+* added photoset model
+* added PHOTOSET_LIST_VIEW to settings
+* added PHOTO_LIST_VIEW to settings
+* fixed sitemaps
+* added generic pagination
