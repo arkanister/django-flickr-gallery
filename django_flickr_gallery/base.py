@@ -367,4 +367,4 @@ class Photoset(object):
     url = property(__url)
 
     def get_absolute_url(self):
-        return reverse('flickr-photoset-list', kwargs={"photoset_id": self.id})
+        return reverse('flickr-photo-list', kwargs={"photoset_id": self.id})
