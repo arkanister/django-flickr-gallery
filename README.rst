@@ -114,7 +114,7 @@ Can show some photosets with some pictures to display, like as summary of the ea
     {% load flickr_tags %}
 
     {% block content %}
-        {% get_photos_by_photoset count=3 count_photos=10 template_name="gallery/flickr/mytemplate.html" %}
+        {% get_featured_photosets count=3 count_photos=10 template_name="gallery/flickr/mytemplate.html" %}
     {% endblock content %}
 
 *paginator*
