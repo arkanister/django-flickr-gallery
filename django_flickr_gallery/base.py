@@ -199,14 +199,16 @@ class Photoset(object):
     def __repr__(self):
         return '<Flickr Photoset: %s>' % self.id
 
-    def _get_photoset(self, user_id=USER_ID, quiet=True, **params):
+    def _get_photoset(self, user_id=USER_ID, **params):
         """
-        Request a single photoset.
+        Request a single photoset info.
         :param photoset_id:
+            The ID of the photoset to fetch information for.
         :param user_id:
-        :param quiet:
-        :param _format:
+            The user_id here is the owner of the set passed in photoset_id.
+            This is optional, but passing this gives better performance.
         :param params:
+            Extra params to request in flickr api.
         :return:
         """
         flickr = FlickrAPI.construct()
@@ -214,7 +216,7 @@ class Photoset(object):
         try:
             params.update({
                 'user_id': user_id,
-                'photoset_id': self.id,
+                'photoset_id': self.id + '1',
                 'format': "json"
             })
 
@@ -223,10 +225,13 @@ class Photoset(object):
             if isinstance(response, basestring):
                 response = flickr.parse_json(response)
 
-            return response['photoset']
+            return response.get('photoset')
         except FlickrError, e:
-            if not quiet:
-                raise FlickrError(e.message)
+            if e.code == 1:
+                raise Http404(_("Photosets not found."))
+            elif e.code == 2:
+                raise Http404(_("User not found."))
+            raise FlickrError(e.message)
 
     @staticmethod
     def getList(user_id=USER_ID, page=None, per_page=None, **params):

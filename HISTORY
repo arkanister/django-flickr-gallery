@@ -113,3 +113,4 @@ Changelog for django-flickr-gallery
 * changed to ``from importlib import import_module`` #11
 * changed photo list template to ``photo_list.html``
 * fixed ``README.rst``
+* fixed 404 error to ``Photoset._get_photoset``

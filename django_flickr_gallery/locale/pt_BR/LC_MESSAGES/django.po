@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-24 16:27-0300\n"
+"POT-Creation-Date: 2016-03-17 11:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,6 @@ msgid "description"
 msgstr "descrição"
 
 #: admin/photoset.py:27
-#| msgid "photoset"
 msgid "photos"
 msgstr "fotos"
 
@@ -43,11 +42,16 @@ msgstr "última atualização"
 msgid "Flickr Gallery"
 msgstr "Galeria do Flickr"
 
-#: base.py:290
+#: base.py:231 base.py:295
 msgid "Photosets not found."
 msgstr "Albums não encontrados."
 
-#: base.py:363
+#: base.py:233
+#| msgid "Photosets not found."
+msgid "User not found."
+msgstr "Usuário não encontrado."
+
+#: base.py:368
 #, python-format
 msgid "Photoset %s not found."
 msgstr "Album %s não encontrado."
@@ -86,7 +90,7 @@ msgstr "Ver Fotos"
 msgid "No any album marked as featured."
 msgstr "Nenhum album marcado como destaque."
 
-#: templates/gallery/flickr/tags/pagination.html:17
+#: templates/gallery/flickr/tags/pagination.html:13
 #, python-format
 msgid "Page %(number)s of %(num_pages)s"
 msgstr "Página %(number)s de %(num_pages)s"
