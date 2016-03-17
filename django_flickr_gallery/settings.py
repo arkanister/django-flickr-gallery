@@ -23,7 +23,7 @@ except AttributeError:
 ###### OPTIONAL SETTIGS ######
 ##############################
 PHOTOSETS_LIST_TEMPLATE = getattr(settings, 'FLICKR_PHOTOSETS_LIST_TEMPLATE', "gallery/flickr/photoset_list.html")
-PHOTOS_LIST_TEMPLATE = getattr(settings, 'FLICKR_PHOTOS_LIST_TEMPLATE', "gallery/flickr/photos.html")
+PHOTOS_LIST_TEMPLATE = getattr(settings, 'FLICKR_PHOTOS_LIST_TEMPLATE', "gallery/flickr/photo_list.html")
 
 PHOTOSET_LIST_VIEW = getattr(settings, 'FLICKR_PHOTOSET_LIST_VIEW', 'django_flickr_gallery.FlickrPhotosetListView')
 PHOTO_LIST_VIEW = getattr(settings, 'FLICKR_PHOTO_LIST_VIEW', 'django_flickr_gallery.FlickrPhotosListView')

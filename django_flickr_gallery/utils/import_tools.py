@@ -1,5 +1,6 @@
+from importlib import import_module
+
 from django.views.generic.base import View
-from django.utils.importlib import import_module
 
 
 def load_class(class_path):

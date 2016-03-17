@@ -106,3 +106,9 @@ Changelog for django-flickr-gallery
 0.4.1 (2016-02-25)
 ------------------
 * fixed ``get_absolute_url`` from ``django_flickr_gallery.base.Photoset``
+
+0.4.2 (2016-03-17)
+------------------
+* removed ``django_flickr_gallery.migrations_django``, the root migration is ``django_flicker_gallery.migrations`` now #12
+* changed to ``from importlib import import_module`` #11
+* changed photo list template to ``photo_list.html``
