@@ -216,7 +216,7 @@ class Photoset(object):
         try:
             params.update({
                 'user_id': user_id,
-                'photoset_id': self.id + '1',
+                'photoset_id': self.id,
                 'format': "json"
             })
 
@@ -228,7 +228,7 @@ class Photoset(object):
             return response.get('photoset')
         except FlickrError, e:
             if e.code == 1:
-                raise Http404(_("Photosets not found."))
+                raise Http404(_("Photoset not found."))
             elif e.code == 2:
                 raise Http404(_("User not found."))
             raise FlickrError(e.message)

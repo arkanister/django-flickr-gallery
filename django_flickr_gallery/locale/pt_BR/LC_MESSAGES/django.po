@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-17 11:30-0300\n"
+"POT-Creation-Date: 2016-03-17 11:49-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,14 +42,18 @@ msgstr "última atualização"
 msgid "Flickr Gallery"
 msgstr "Galeria do Flickr"
 
-#: base.py:231 base.py:295
-msgid "Photosets not found."
-msgstr "Albums não encontrados."
+#: base.py:231
+#| msgid "Photosets not found."
+msgid "Photoset not found."
+msgstr "Album não encontrado."
 
 #: base.py:233
-#| msgid "Photosets not found."
 msgid "User not found."
 msgstr "Usuário não encontrado."
+
+#: base.py:295
+msgid "Photosets not found."
+msgstr "Albums não encontrados."
 
 #: base.py:368
 #, python-format
