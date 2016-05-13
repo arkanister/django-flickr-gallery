@@ -47,7 +47,6 @@ setup(
         "django-ckeditor >= 5.0.2",
         "flickrapi",
         "pytz",
-        "ndg-httpsclient"
     ],
     classifiers=[
         'Environment :: Web Environment',

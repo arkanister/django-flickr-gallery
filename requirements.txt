@@ -3,4 +3,3 @@ django-ckeditor==5.0.2
 flickrapi
 pytz
 dateutils
-ndg-httpsclient

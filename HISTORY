@@ -118,3 +118,7 @@ Changelog for django-flickr-gallery
 0.4.3 (2016-03-17)
 ------------------
 * fixed ``Photoset._get_photoset``
+
+0.4.4 (2016-03-17)
+------------------
+* removed dependencies
