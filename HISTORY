@@ -122,3 +122,9 @@ Changelog for django-flickr-gallery
 0.4.4 (2016-03-17)
 ------------------
 * removed dependencies
+
+0.4.5 (2016-06-27)
+------------------
+* fixed cache settings
+* solved warnings from django 1.9 and 1.10
+* fixed settings from django 1.9 and 1.10

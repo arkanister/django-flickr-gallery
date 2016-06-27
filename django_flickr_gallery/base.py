@@ -2,18 +2,16 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.utils.translation import ugettext as _
-from django_flickr_gallery import settings
+
+from django_flickr_gallery.settings import API_KEY
+from django_flickr_gallery.settings import CACHE
+from django_flickr_gallery.settings import CACHE_BACKEND
+from django_flickr_gallery.settings import SECRET
+from django_flickr_gallery.settings import STORE_TOKEN
+from django_flickr_gallery.settings import USER_ID
 from django_flickr_gallery.shortcuts import get_paginator
 
 from flickrapi import FlickrAPI as BaseFlickrAPI, FlickrError
-
-
-API_KEY = getattr(settings, 'API_KEY')
-SECRET = getattr(settings, 'SECRET')
-CACHE = getattr(settings, 'CACHE')
-CACHE_BACKEND = getattr(settings, 'CACHE_BACKEND')
-STORE_TOKEN = getattr(settings, 'STORE_TOKEN')
-USER_ID = getattr(settings, 'USER_ID')
 
 
 class FlickrAPI(BaseFlickrAPI):
@@ -38,7 +36,9 @@ class FlickrAPI(BaseFlickrAPI):
             store_token=STORE_TOKEN,
             cache=CACHE)
 
-        _flickr.cache = CACHE_BACKEND
+        if CACHE and CACHE_BACKEND:  # if cache is enabled in settings set the cache backend
+            _flickr.cache = CACHE_BACKEND
+
         return _flickr
 
 

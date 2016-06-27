@@ -15,6 +15,12 @@ def load_class(class_path):
         >>> load_class("mysiste.MyClass")
 
     """
+    if not class_path:
+        return None
+
+    if not isinstance(class_path, basestring):
+        return class_path
+
     class_path, class_name = class_path.rsplit(".", 1)
     module = import_module(class_path)
     return getattr(module, class_name)

@@ -14,7 +14,7 @@ from django.conf.urls import patterns, url
 from flickr_ckeditor.views import CkeditorFlickrView
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     # ckeditor - need be first - don't erase
     url(r'^$', CkeditorFlickrView.as_view(), name='merda-album'),
-)
+]
