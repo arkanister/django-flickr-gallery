@@ -1,0 +1,79 @@
+{
+    "photo": {
+        "people": {
+            "haspeople": 0
+        },
+        "dateuploaded": "1448306023",
+        "originalformat": "jpg",
+        "owner": {
+            "username": "arkanisterdev",
+            "realname": "Arkanister DEV",
+            "nsid": "136293891@N02",
+            "iconserver": "0",
+            "location": "",
+            "path_alias": None,
+            "iconfarm": 0
+        },
+        "publiceditability": {
+            "canaddmeta": 0,
+            "cancomment": 1
+        },
+        "id": "23252829235",
+        "title": {
+            "_content": "the picture"
+        },
+        "media": "photo",
+        "tags": {
+            "tag": []
+        },
+        "comments": {
+            "_content": "0"
+        },
+        "secret": "190c15c7e5",
+        "usage": {
+            "canblog": 0,
+            "canshare": 1,
+            "candownload": 1,
+            "canprint": 0
+        },
+        "description": {
+            "_content": "A simple picture."
+        },
+        "isfavorite": 0,
+        "views": "1",
+        "farm": 1,
+        "visibility": {
+            "isfriend": 0,
+            "isfamily": 0,
+            "ispublic": 1
+        },
+        "rotation": 0,
+        "dates": {
+            "taken": "2015-11-23 19:13:24",
+            "takenunknown": "1",
+            "takengranularity": 0,
+            "lastupdate": "1448306061",
+            "posted": "1448306023"
+        },
+        "originalsecret": "ba9daecff6",
+        "license": "0",
+        "notes": {
+            "note": []
+        },
+        "server": "633",
+        "safety_level": "0",
+        "urls": {
+            "url": [
+                {
+                    "type": "photopage",
+                    "_content": "https://www.flickr.com/photos/136293891@N02/23252829235/"
+                }
+            ]
+        },
+        "editability": {
+            "canaddmeta": 0,
+            "cancomment": 0
+        }
+    },
+    "stat": "ok"
+}

@@ -128,3 +128,7 @@ Changelog for django-flickr-gallery
 * fixed cache settings
 * solved warnings from django 1.9 and 1.10
 * fixed settings from django 1.9 and 1.10
+
+0.4.6 (2016-06-27)
+------------------
+* implemented the Photo.getInfo method into base api to get photos into photoset

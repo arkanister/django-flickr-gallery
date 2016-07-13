@@ -73,8 +73,27 @@ class Photo(object):
         self.tags = tags
 
     @staticmethod
-    def getInfo(id):
-        pass
+    def getInfo(photo_id):
+        """
+        Get photo info from flickr.
+        :param photo_id:
+            The id of the photo to get information for.
+        :return: Photo object
+        """
+        flickr = FlickrAPI.construct()
+
+        try:
+            params = {'photo_id': photo_id, 'format': 'json'}
+            response = flickr.photos.getInfo(**params)
+
+            if isinstance(response, basestring):
+                response = flickr.parse_json(response)
+
+            parse_reponse = lambda x: x.get('photo', None)
+            return Photo(id=photo_id, data=parse_reponse(response))
+        except FlickrError, e:
+            if e.code == 1:
+                raise Http404(_("Photo %s not found.") % photo_id)
 
     @staticmethod
     def getList(id, photoset_id):
@@ -353,7 +372,7 @@ class Photoset(object):
                 ]
 
             photos, total, page, per_page, pages = parse_reponse(response)
-            photos = [Photo(photo['id'], data=photo) for photo in photos]
+            photos = [Photo.getInfo(photo['id']) for photo in photos]
 
             paginator, page_obj = None, None
 
