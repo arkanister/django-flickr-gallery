@@ -132,3 +132,9 @@ Changelog for django-flickr-gallery
 0.4.6 (2016-06-27)
 ------------------
 * implemented the Photo.getInfo method into base api to get photos into photoset
+
+0.4.7 (2016-06-27)
+------------------
+* fixed support to python 3.X
+* fixed NoneTyped Error into photoset photos
+* fixed performance to get photo list

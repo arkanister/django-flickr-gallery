@@ -1,3 +1,5 @@
+from django.http.response import Http404
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django_flickr_gallery import settings
 from django_flickr_gallery.base import Photoset
@@ -44,7 +46,7 @@ class PaginatedMixin(object):
         context_object_name = self.get_context_object_name()
         object_list, paginator, page = self.paginate(page_number, page_size)
 
-        is_paginated = page_size and paginator is not None and page is not None
+        is_paginated = page_size and paginator is not None and page is not None and page_number > 1
 
         if is_paginated:
             context = {
@@ -88,8 +90,14 @@ class FlickrPhotosListView(PaginatedMixin, TemplateView):
     photoset = None
 
     def paginate(self, page_number, page_size):
-        self.photoset = Photoset(id=self.kwargs.get('photoset_id'))
+        photoset_id = self.kwargs.get('photoset_id')
+        self.photoset = Photoset(id=photoset_id)
         photos, paginator, page = self.photoset.getPhotos(page=page_number, per_page=page_size)
+
+        if not photos:
+            raise Http404(_('No photos not found for photoset %(photoset_id)s') % {
+                'photoset_id': photoset_id})
+
         return photos, paginator, page
 
     def get_context_data(self, **kwargs):

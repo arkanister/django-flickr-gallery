@@ -18,7 +18,7 @@ def load_class(class_path):
     if not class_path:
         return None
 
-    if not isinstance(class_path, basestring):
+    if not isinstance(class_path, (str, bytes)):
         return class_path
 
     class_path, class_name = class_path.rsplit(".", 1)

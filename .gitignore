@@ -1,5 +1,6 @@
 # Virtualenv
 .virtualenv/
+.virtualenvP3/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

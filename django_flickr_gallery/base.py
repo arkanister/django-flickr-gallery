@@ -2,16 +2,18 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.utils.translation import ugettext as _
-
-from django_flickr_gallery.settings import API_KEY
-from django_flickr_gallery.settings import CACHE
-from django_flickr_gallery.settings import CACHE_BACKEND
-from django_flickr_gallery.settings import SECRET
-from django_flickr_gallery.settings import STORE_TOKEN
-from django_flickr_gallery.settings import USER_ID
+from django_flickr_gallery import settings
 from django_flickr_gallery.shortcuts import get_paginator
 
 from flickrapi import FlickrAPI as BaseFlickrAPI, FlickrError
+
+
+API_KEY = getattr(settings, 'API_KEY')
+SECRET = getattr(settings, 'SECRET')
+CACHE = getattr(settings, 'CACHE')
+CACHE_BACKEND = getattr(settings, 'CACHE_BACKEND')
+STORE_TOKEN = getattr(settings, 'STORE_TOKEN')
+USER_ID = getattr(settings, 'USER_ID')
 
 
 class FlickrAPI(BaseFlickrAPI):
@@ -36,9 +38,7 @@ class FlickrAPI(BaseFlickrAPI):
             store_token=STORE_TOKEN,
             cache=CACHE)
 
-        if CACHE and CACHE_BACKEND:  # if cache is enabled in settings set the cache backend
-            _flickr.cache = CACHE_BACKEND
-
+        _flickr.cache = CACHE_BACKEND
         return _flickr
 
 
@@ -73,27 +73,8 @@ class Photo(object):
         self.tags = tags
 
     @staticmethod
-    def getInfo(photo_id):
-        """
-        Get photo info from flickr.
-        :param photo_id:
-            The id of the photo to get information for.
-        :return: Photo object
-        """
-        flickr = FlickrAPI.construct()
-
-        try:
-            params = {'photo_id': photo_id, 'format': 'json'}
-            response = flickr.photos.getInfo(**params)
-
-            if isinstance(response, basestring):
-                response = flickr.parse_json(response)
-
-            parse_reponse = lambda x: x.get('photo', None)
-            return Photo(id=photo_id, data=parse_reponse(response))
-        except FlickrError, e:
-            if e.code == 1:
-                raise Http404(_("Photo %s not found.") % photo_id)
+    def getInfo(id):
+        pass
 
     @staticmethod
     def getList(id, photoset_id):
@@ -106,7 +87,7 @@ class Photo(object):
         try:
             val = self._val(item)
 
-        except AttributeError, e:
+        except AttributeError as e:
             val = self._data.get(item, None)
 
             if val is None:
@@ -116,7 +97,7 @@ class Photo(object):
     def __get_title(self):
         if self.__title is None:
             return
-        elif isinstance(self.__title, basestring):
+        elif isinstance(self.__title, (str, bytes)):
             return self.__title
         elif isinstance(self.__title, dict):
             self.__title = self.__title.get('_content', None)
@@ -126,7 +107,7 @@ class Photo(object):
     def __get_description(self):
         if self.__description is None:
             return
-        elif isinstance(self.__description, basestring):
+        elif isinstance(self.__description, (str, bytes)):
             return self.__description
         elif isinstance(self.__description, dict):
             self.__description = self.__description.get('_content', None)
@@ -181,7 +162,7 @@ class Photoset(object):
     def __get_title(self):
         if self.__title is None:
             return
-        elif isinstance(self.__title, basestring):
+        elif isinstance(self.__title, (str, bytes)):
             return self.__title
         elif isinstance(self.__title, dict):
             self.__title = self.__title.get('_content', None)
@@ -191,7 +172,7 @@ class Photoset(object):
     def __get_description(self):
         if self.__description is None:
             return
-        elif isinstance(self.__description, basestring):
+        elif isinstance(self.__description, (str, bytes)):
             return self.__description
         elif isinstance(self.__description, dict):
             self.__description = self.__description.get('_content', None)
@@ -205,7 +186,7 @@ class Photoset(object):
         try:
             val = self._val(item)
 
-        except AttributeError, e:
+        except AttributeError as e:
             val = self._data.get(item, None)
 
             if val is None:
@@ -241,11 +222,11 @@ class Photoset(object):
 
             response = flickr.photosets.getInfo(**params)
 
-            if isinstance(response, basestring):
+            if isinstance(response, (str, bytes)):
                 response = flickr.parse_json(response)
 
             return response.get('photoset')
-        except FlickrError, e:
+        except FlickrError as e:
             if e.code == 1:
                 raise Http404(_("Photoset not found."))
             elif e.code == 2:
@@ -281,14 +262,14 @@ class Photoset(object):
 
             response = flickr.photosets.getList(**params)
 
-            if isinstance(response, basestring):
+            if isinstance(response, (str, bytes)):
                 response = flickr.parse_json(response)
 
             def parse_reponse(response):
                 _photosets = response.get('photosets', None)
 
                 if not _photosets:
-                    return None
+                    return [None, None, None, None, None]
 
                 return (
                     _photosets['photoset'],
@@ -309,7 +290,7 @@ class Photoset(object):
 
             return photosets, paginator, page_obj
 
-        except FlickrError, e:
+        except FlickrError as e:
             if e.code == 1:
                 raise Http404(_("Photosets not found."))
 
@@ -349,19 +330,20 @@ class Photoset(object):
                 'per_page': per_page,
                 'page': page or 1,
                 'privacy_filter': privacy_filter,
-                'media': 'photos'
+                'media': 'photos',
+                'extras': 'description'
             })
 
             response = flickr.photosets.getPhotos(**params)
 
-            if isinstance(response, basestring):
+            if isinstance(response, (str, bytes)):
                 response = flickr.parse_json(response)
 
             def parse_reponse(response):
                 _photoset = response.get('photoset', None)
 
                 if not _photoset:
-                    return None
+                    return [None, None, None, None, None]
 
                 return [
                     _photoset['photo'],
@@ -372,9 +354,10 @@ class Photoset(object):
                 ]
 
             photos, total, page, per_page, pages = parse_reponse(response)
-            photos = [Photo.getInfo(photo['id']) for photo in photos]
-
             paginator, page_obj = None, None
+
+            if photos is not None:
+                photos = [Photo(photo['id'], data=photo) for photo in photos]
 
             if per_page is not None:
                 paginator, page_obj = get_paginator(
@@ -382,7 +365,7 @@ class Photoset(object):
                     pages=pages, total=total)
 
             return photos, paginator, page_obj
-        except FlickrError, e:
+        except FlickrError as e:
             if e.code == 1:
                 raise Http404(_("Photoset %s not found.") % self.id)
 

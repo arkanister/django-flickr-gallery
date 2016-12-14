@@ -3,7 +3,7 @@ import datetime
 
 
 def parse_unix_datetime(str_value):
-    if isinstance(str_value, basestring):
+    if isinstance(str_value, (str, bytes)):
         str_value = int(str_value)
 
     time_struct = time.localtime(int(str_value))
