@@ -24,7 +24,7 @@ class FlickrAPI(BaseFlickrAPI):
     """
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, '_flickr_api_instance'):
-            cls._flickr_api_instance = super(FlickrAPI, cls).__new__(cls, *args, **kwargs)
+            cls._flickr_api_instance = BaseFlickrAPI(*args, **kwargs)
         return cls._flickr_api_instance
 
     @staticmethod
